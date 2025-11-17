@@ -5,162 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thông tin lý lịch cá nhân</title>
   <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #f8f8f8;
-    }
-    .page {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-    header {
-      background: #e60012;
-      color: #fff;
-      padding: 24px;
-      border-radius: 12px;
-      text-align: center;
-      font-size: 28px;
-      font-weight: 700;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-      letter-spacing: 0.5px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      margin-top: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      border: 1px solid #e0e0e0;
-    }
-    .card-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: #e60012;
-      margin-bottom: 12px;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px 24px;
-    }
-    .field {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-    label {
-      font-size: 14px;
-      font-weight: 600;
-      color: #e60012;
-      margin-bottom: 4px;
-    }
-    input, select, textarea {
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    input:focus, select:focus, textarea:focus {
-      border-color: #e60012;
-      box-shadow: 0 0 0 2px rgba(230,0,18,0.15);
-    }
-    .border-red {
-      border-color: #e60012 !important;
-    }
-    .border-green {
-      border-color: #28a745 !important;
-    }
-    .btn-wrap {
-      text-align: center;
-      margin-top: 24px;
-    }
-    #submitBtn {
-      background: #e60012;
-      color: #fff;
-      border: none;
-      padding: 10px 40px;
-      font-size: 16px;
-      font-weight: 700;
-      border-radius: 999px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      transition: background 0.2s, transform 0.1s, box-shadow 0.1s;
-    }
-    #submitBtn:hover {
-      background: #c70010;
-    }
-    #submitBtn:active {
-      transform: translateY(1px);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
-
+    body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: #f8f8f8; }
+    .page { max-width: 1100px; margin: 0 auto; padding: 16px; }
+    header { background: #e60012; color: #fff; padding: 24px; border-radius: 12px; text-align: center; font-size: 28px; font-weight: 700; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    .card { background: #fff; border-radius: 12px; padding: 24px; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; }
+    .card-title { font-size: 18px; font-weight: 700; color: #e60012; margin-bottom: 12px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; }
+    .field { position: relative; display: flex; flex-direction: column; }
+    label { font-size: 14px; font-weight: 600; color: #e60012; margin-bottom: 4px; }
+    input, select, textarea { padding: 8px 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    input:focus, select:focus, textarea:focus { border-color: #e60012; box-shadow: 0 0 0 2px rgba(230,0,18,0.15); }
+    .border-red { border-color: #e60012 !important; }
+    .border-green { border-color: #28a745 !important; }
+    .btn-wrap { text-align: center; margin-top: 24px; }
+    #submitBtn { background: #e60012; color: #fff; border: none; padding: 10px 40px; font-size: 16px; font-weight: 700; border-radius: 999px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
     /* Spinner */
-    .spinner {
-      border: 4px solid #fff;
-      border-top: 4px solid #e60012;
-      border-radius: 50%;
-      width: 22px;
-      height: 22px;
-      animation: spin 0.8s linear infinite;
-      display: inline-block;
-    }
+    .spinner { border: 4px solid #fff; border-top: 4px solid #e60012; border-radius: 50%; width: 22px; height: 22px; animation: spin 0.8s linear infinite; display: inline-block; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
-
-    /* Tooltip lỗi */
-    .tooltip {
-      background: #e60012;
-      color: white;
-      padding: 4px 8px;
-      font-size: 12px;
-      border-radius: 6px;
-      position: absolute;
-      left: 0;
-      bottom: -22px;
-      white-space: nowrap;
-      z-index: 20;
-    }
-
-    /* Popup thành công */
-    #successPopup {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-    }
-    #successPopup .popup-inner {
-      background: #fff;
-      padding: 24px;
-      border-radius: 16px;
-      width: 280px;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-      animation: fadeIn 0.35s ease-out;
-    }
-    #successPopup .icon {
-      font-size: 40px;
-      color: #28a745;
-      margin-bottom: 8px;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-      .grid-2 {
-        grid-template-columns: 1fr;
-      }
-      header {
-        font-size: 22px;
-      }
-    }
+    .tooltip { background: #e60012; color: white; padding: 4px 8px; font-size: 12px; border-radius: 6px; position: absolute; left: 0; bottom: -22px; white-space: nowrap; z-index: 20; }
+    #successPopup { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; z-index: 50; }
+    #successPopup .popup-inner { background: #fff; padding: 24px; border-radius: 16px; width: 280px; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.25); animation: fadeIn 0.35s ease-out; }
+    #successPopup .icon { font-size: 40px; color: #28a745; margin-bottom: 8px; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } header { font-size: 22px; } }
   </style>
 </head>
 <body>
@@ -168,45 +35,16 @@
     <header>THÔNG TIN LÝ LỊCH CÁ NHÂN</header>
 
     <form id="hrForm">
-
       <!-- KHỐI 1: THÔNG TIN CƠ BẢN -->
       <div class="card">
         <div class="card-title">1. THÔNG TIN CƠ BẢN</div>
         <div class="grid-2">
-          <div class="field">
-            <label for="manv">Mã nhân viên *</label>
-            <input type="text" id="manv" required />
-          </div>
-
-          <div class="field">
-            <label for="gioitinh">Giới tính *</label>
-            <select id="gioitinh" required>
-              <option value="">-- Chọn --</option>
-              <option>Nam</option>
-              <option>Nữ</option>
-              <option>Khác</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="hoten">Họ và tên *</label>
-            <input type="text" id="hoten" required />
-          </div>
-
-          <div class="field">
-            <label for="hodem">Họ và tên đệm (tự tách)</label>
-            <input type="text" id="hodem" readonly />
-          </div>
-
-          <div class="field">
-            <label for="ten">Tên (tự tách)</label>
-            <input type="text" id="ten" readonly />
-          </div>
-
-          <div class="field">
-            <label for="ngaysinh">Ngày sinh *</label>
-            <input type="date" id="ngaysinh" required />
-          </div>
+          <div class="field"><label for="manv">Mã nhân viên *</label><input type="text" id="manv" required /></div>
+          <div class="field"><label for="gioitinh">Giới tính *</label><select id="gioitinh" required><option value="">-- Chọn --</option><option>Nam</option><option>Nữ</option><option>Khác</option></select></div>
+          <div class="field"><label for="hoten">Họ và tên *</label><input type="text" id="hoten" required /></div>
+          <div class="field"><label for="hodem">Họ và tên đệm (tự tách)</label><input type="text" id="hodem" readonly /></div>
+          <div class="field"><label for="ten">Tên (tự tách)</label><input type="text" id="ten" readonly /></div>
+          <div class="field"><label for="ngaysinh">Ngày sinh *</label><input type="date" id="ngaysinh" required /></div>
         </div>
       </div>
 
@@ -214,20 +52,9 @@
       <div class="card">
         <div class="card-title">2. THÔNG TIN CCCD</div>
         <div class="grid-2">
-          <div class="field">
-            <label for="cccd">Số CCCD *</label>
-            <input type="text" id="cccd" required />
-          </div>
-
-          <div class="field">
-            <label for="ngaycap">Ngày cấp CCCD *</label>
-            <input type="date" id="ngaycap" required />
-          </div>
-
-          <div class="field">
-            <label for="noicap">Nơi cấp CCCD *</label>
-            <input type="text" id="noicap" required />
-          </div>
+          <div class="field"><label for="cccd">Số CCCD *</label><input type="text" id="cccd" required /></div>
+          <div class="field"><label for="ngaycap">Ngày cấp CCCD *</label><input type="date" id="ngaycap" required /></div>
+          <div class="field"><label for="noicap">Nơi cấp CCCD *</label><input type="text" id="noicap" required /></div>
         </div>
       </div>
 
@@ -235,45 +62,13 @@
       <div class="card">
         <div class="card-title">3. THÔNG TIN CÔNG VIỆC</div>
         <div class="grid-2">
-          <div class="field">
-            <label for="nhanviec">Ngày nhận việc thực tế *</label>
-            <input type="date" id="nhanviec" required />
-          </div>
-
-          <div class="field">
-            <label for="nhanviechd">Ngày nhận việc theo HĐ</label>
-            <input type="date" id="nhanviechd" />
-          </div>
-
-          <div class="field">
-            <label for="chucvu">Chức vụ *</label>
-            <input type="text" id="chucvu" required />
-          </div>
-
-          <div class="field">
-            <label for="phongban">Phòng ban / Tổ *</label>
-            <input type="text" id="phongban" required />
-          </div>
-
-          <div class="field">
-            <label for="dienthoai">Điện thoại di động *</label>
-            <input type="text" id="dienthoai" required />
-          </div>
-
-          <div class="field">
-            <label for="email">Email *</label>
-            <input type="email" id="email" required />
-          </div>
-
-          <div class="field">
-            <label for="tinhtrang">Tình trạng nhân viên *</label>
-            <select id="tinhtrang" required>
-              <option value="">-- Chọn --</option>
-              <option>Đang làm việc</option>
-              <option>Nghỉ việc</option>
-              <option>Tạm nghỉ</option>
-            </select>
-          </div>
+          <div class="field"><label for="nhanviec">Ngày nhận việc thực tế *</label><input type="date" id="nhanviec" required /></div>
+          <div class="field"><label for="nhanviechd">Ngày nhận việc theo HĐ</label><input type="date" id="nhanviechd" /></div>
+          <div class="field"><label for="chucvu">Chức vụ *</label><input type="text" id="chucvu" required /></div>
+          <div class="field"><label for="phongban">Phòng ban / Tổ *</label><input type="text" id="phongban" required /></div>
+          <div class="field"><label for="dienthoai">Điện thoại di động *</label><input type="text" id="dienthoai" required /></div>
+          <div class="field"><label for="email">Email *</label><input type="email" id="email" required /></div>
+          <div class="field"><label for="tinhtrang">Tình trạng nhân viên *</label><select id="tinhtrang" required><option value="">-- Chọn --</option><option>Đang làm việc</option><option>Nghỉ việc</option><option>Tạm nghỉ</option></select></div>
         </div>
       </div>
 
@@ -281,22 +76,10 @@
       <div class="card">
         <div class="card-title">4. ĐỊA CHỈ – HỘ KHẨU</div>
         <div class="grid-2">
-          <div class="field">
-            <label for="thuongtru">Địa chỉ thường trú</label>
-            <input type="text" id="thuongtru" />
-          </div>
-          <div class="field">
-            <label for="tamtru">Địa chỉ tạm trú</label>
-            <input type="text" id="tamtru" />
-          </div>
-          <div class="field">
-            <label for="tinh">Tỉnh/TP</label>
-            <input type="text" id="tinh" />
-          </div>
-          <div class="field">
-            <label for="huyen">Quận/Huyện</label>
-            <input type="text" id="huyen" />
-          </div>
+          <div class="field"><label for="thuongtru">Địa chỉ thường trú</label><input type="text" id="thuongtru" /></div>
+          <div class="field"><label for="tamtru">Địa chỉ tạm trú</label><input type="text" id="tamtru" /></div>
+          <div class="field"><label for="tinh">Tỉnh/TP</label><input type="text" id="tinh" /></div>
+          <div class="field"><label for="huyen">Quận/Huyện</label><input type="text" id="huyen" /></div>
         </div>
       </div>
 
@@ -304,14 +87,8 @@
       <div class="card">
         <div class="card-title">5. BHXH – MÃ SỐ THUẾ</div>
         <div class="grid-2">
-          <div class="field">
-            <label for="mst">Mã số thuế</label>
-            <input type="text" id="mst" />
-          </div>
-          <div class="field">
-            <label for="bhxh">Mã số BHXH</label>
-            <input type="text" id="bhxh" />
-          </div>
+          <div class="field"><label for="mst">Mã số thuế</label><input type="text" id="mst" /></div>
+          <div class="field"><label for="bhxh">Mã số BHXH</label><input type="text" id="bhxh" /></div>
         </div>
       </div>
 
@@ -319,209 +96,170 @@
       <div class="card">
         <div class="card-title">6. HỌC VẤN – CHUYÊN MÔN</div>
         <div class="grid-2">
-          <div class="field">
-            <label for="hocvan">Trình độ học vấn</label>
-            <input type="text" id="hocvan" />
-          </div>
-          <div class="field">
-            <label for="chuyenmon">Chuyên môn</label>
-            <input type="text" id="chuyenmon" />
-          </div>
+          <div class="field"><label for="hocvan">Trình độ học vấn</label><input type="text" id="hocvan" /></div>
+          <div class="field"><label for="chuyenmon">Chuyên môn</label><input type="text" id="chuyenmon" /></div>
         </div>
       </div>
 
-      <div class="btn-wrap">
-        <button id="submitBtn" type="submit">Gửi thông tin</button>
-      </div>
-
+      <div class="btn-wrap"><button id="submitBtn" type="submit">Gửi thông tin</button></div>
     </form>
 
-    <!-- Popup thành công -->
-    <div id="successPopup">
-      <div class="popup-inner">
-        <div class="icon">✓</div>
-        <div class="msg">Gửi thành công!</div>
-      </div>
-    </div>
+    <div id="successPopup"><div class="popup-inner"><div class="icon">✓</div><div class="msg">Gửi thành công!</div></div></div>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById("hrForm");
-      const inputs = Array.from(form.querySelectorAll("input, select, textarea"));
-      const submitBtn = document.getElementById("submitBtn");
-      const popup = document.getElementById("successPopup");
-      const hoten = document.getElementById("hoten");
-      const hodem = document.getElementById("hodem");
-      const ten = document.getElementById("ten");
+    (function(){
+      const WORKER_URL = "https://nhanvien-form.dathongtan1810.workers.dev/"; // <- thay nếu cần
 
-      // 1) Enter → nhảy field kế tiếp, field cuối → focus nút Gửi
-      inputs.forEach((el, idx) => {
-        el.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            const next = inputs[idx + 1];
-            if (next) {
-              next.focus();
-            } else {
-              submitBtn.focus();
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("hrForm");
+        const inputs = Array.from(form.querySelectorAll("input, select, textarea"));
+        const submitBtn = document.getElementById("submitBtn");
+        const popup = document.getElementById("successPopup");
+        const hoten = document.getElementById("hoten");
+        const hodem = document.getElementById("hodem");
+        const ten = document.getElementById("ten");
+
+        // Enter => next input (only visible fields)
+        const visibleInputs = inputs.filter(i => i.type !== "hidden");
+        visibleInputs.forEach((el, idx) => {
+          el.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              const next = visibleInputs[idx + 1];
+              if (next) next.focus(); else submitBtn.focus();
             }
+          });
+        });
+
+        // auto split name
+        if (hoten) hoten.addEventListener("blur", () => {
+          const full = hoten.value.trim().replace(/\s+/g, " ");
+          if (!full) { if (hodem) hodem.value=""; if (ten) ten.value=""; return; }
+          const parts = full.split(" ");
+          if (parts.length===1) { if (hodem) hodem.value=""; if (ten) ten.value=parts[0]; }
+          else { if (ten) ten.value = parts[parts.length-1]; if (hodem) hodem.value = parts.slice(0,-1).join(" "); }
+        });
+
+        // helper to show tooltip
+        function showTooltip(el, msg) {
+          const t = document.createElement("div");
+          t.className = "tooltip";
+          t.innerText = msg;
+          el.parentElement.appendChild(t);
+        }
+
+        // submit handler
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          // clear old tooltips and styles
+          form.querySelectorAll(".tooltip").forEach(t => t.remove());
+          inputs.forEach(i => i.classList.remove("border-red","border-green"));
+
+          // validate
+          let firstError = null;
+          let valid = true;
+          inputs.forEach(el => {
+            if (el.hasAttribute("required") && !el.value.trim()) {
+              valid = false;
+              el.classList.add("border-red");
+              showTooltip(el, "Không được để trống");
+              if (!firstError) firstError = el;
+            } else if (el.value && el.value.toString().trim() !== "") {
+              el.classList.add("border-green");
+            }
+          });
+
+          if (!valid) {
+            firstError.scrollIntoView({behavior:"smooth", block:"center"});
+            firstError.focus();
+            return;
           }
-        });
-      });
 
-      // 2) Tự động tách Họ / Tên từ "Họ và tên"
-      hoten.addEventListener("blur", () => {
-        const full = hoten.value.trim().replace(/\s+/g, " ");
-        if (!full) {
-          hodem.value = "";
-          ten.value = "";
-          return;
-        }
-        const parts = full.split(" ");
-        if (parts.length === 1) {
-          hodem.value = "";
-          ten.value = parts[0];
-        } else {
-          ten.value = parts[parts.length - 1];
-          hodem.value = parts.slice(0, -1).join(" ");
-        }
-      });
+          // store original button html BEFORE doing async work
+          const oldHTML = submitBtn.innerHTML;
 
-      // 3) Chuẩn bị hàm CHECK TRÙNG từ Google Sheet (placeholder)
-      async function checkDuplicateFromSheet() {
-        const manv = document.getElementById("manv").value.trim();
-        const fullName = document.getElementById("hoten").value.trim();
-        const soCCCD = document.getElementById("cccd").value.trim();
-        const ngaySinh = document.getElementById("ngaysinh").value;
-        const ngayCap = document.getElementById("ngaycap").value;
+          // show spinner
+          submitBtn.innerHTML = '<span class="spinner"></span>';
+          submitBtn.disabled = true;
 
-        if (!manv && !fullName && !soCCCD) return;
+          try {
+            // build payload from DOM
+            const payload = {
+              manv: document.getElementById("manv").value.trim(),
+              gioitinh: document.getElementById("gioitinh").value,
+              hoten: document.getElementById("hoten").value.trim(),
+              hodem: document.getElementById("hodem").value.trim(),
+              ten: document.getElementById("ten").value.trim(),
+              ngaysinh: document.getElementById("ngaysinh").value,
+              cccd: document.getElementById("cccd").value.trim(),
+              ngaycap: document.getElementById("ngaycap").value,
+              noicap: document.getElementById("noicap").value.trim(),
+              nhanviec: document.getElementById("nhanviec").value,
+              nhanviechd: document.getElementById("nhanviechd").value,
+              chucvu: document.getElementById("chucvu").value.trim(),
+              phongban: document.getElementById("phongban").value.trim(),
+              dienthoai: document.getElementById("dienthoai").value.trim(),
+              email: document.getElementById("email").value.trim(),
+              tinhtrang: document.getElementById("tinhtrang").value,
+              thuongtru: document.getElementById("thuongtru").value.trim(),
+              tamtru: document.getElementById("tamtru").value.trim(),
+              tinh: document.getElementById("tinh").value.trim(),
+              huyen: document.getElementById("huyen").value.trim(),
+              mst: document.getElementById("mst").value.trim(),
+              bhxh: document.getElementById("bhxh").value.trim(),
+              hocvan: document.getElementById("hocvan").value.trim(),
+              chuyenmon: document.getElementById("chuyenmon").value.trim()
+            };
 
-        // TODO:
-        // Ở đây bạn sẽ gọi API Google Sheet / Apps Script để kiểm tra trùng:
-        // - Mã NV
-        // - Họ và tên
-        // - CCCD
-        // - Ngày sinh
-        // - Ngày cấp
-        //
-        // Ví dụ nếu dùng Apps Script WebApp:
-        //
-        // const res = await fetch('YOUR_WEBAPP_URL?manv=' + encodeURIComponent(manv) + ...);
-        // const data = await res.json();
-        // if (data.duplicate) { ... hiển thị cảnh báo ... }
+            // send to worker
+            const res = await fetch(WORKER_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            });
 
-        console.log("TODO: Gọi API kiểm tra trùng với Google Sheet tại đây");
-      }
+            let resultText;
+            try {
+              resultText = await res.text();
+            } catch (err) {
+              resultText = null;
+            }
 
-      // Gọi check trùng khi blur các trường chính
-      ["manv", "hoten", "cccd", "ngaysinh", "ngaycap"].forEach(id => {
-        const el = document.getElementById(id);
-        el.addEventListener("blur", checkDuplicateFromSheet);
-      });
+            let result;
+            try {
+              result = resultText ? JSON.parse(resultText) : null;
+            } catch (err) {
+              // Not JSON
+              result = { status: res.ok ? "success" : "error", raw: resultText };
+            }
 
-      // 4) Submit form: validate + spinner + popup đẹp
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+            if (!res.ok || (result && result.status && result.status !== "success")) {
+              console.error("Worker returned error:", { httpStatus: res.status, result });
+              alert("Lỗi gửi dữ liệu:\n" + JSON.stringify(result));
+              submitBtn.innerHTML = oldHTML;
+              submitBtn.disabled = false;
+              return;
+            }
 
-        // Xoá lỗi cũ
-        form.querySelectorAll(".tooltip").forEach(t => t.remove());
-        inputs.forEach(el => {
-          el.classList.remove("border-red", "border-green");
-        });
+            // success
+            popup.style.display = "flex";
+            setTimeout(()=> popup.style.display = "none", 1500);
+            form.reset();
+            inputs.forEach(i => i.classList.remove("border-green"));
 
-        let firstError = null;
-        let valid = true;
-
-        inputs.forEach(el => {
-          if (el.hasAttribute("required") && !el.value.trim()) {
-            valid = false;
-            el.classList.add("border-red");
-
-            const tooltip = document.createElement("div");
-            tooltip.className = "tooltip";
-            tooltip.innerText = "Không được để trống";
-            el.parentElement.appendChild(tooltip);
-
-            if (!firstError) firstError = el;
-          } else if (el.value.trim()) {
-            el.classList.add("border-green");
+          } catch (err) {
+            console.error("Fetch/send error:", err);
+            alert("Lỗi gửi dữ liệu (network/worker):\n" + JSON.stringify(err && err.message ? err.message : String(err)));
+          } finally {
+            // always restore button
+            submitBtn.innerHTML = oldHTML;
+            submitBtn.disabled = false;
           }
-        });
-
-        if (!valid) {
-          firstError.scrollIntoView({ behavior: "smooth", block: "center" });
-          firstError.focus();
-          return;
-        }
-const oldHTML = submitBtn.innerHTML;
-        // --- GỬI DỮ LIỆU TỚI CLOUDFLARE WORKER ---
-const payload = {
-  manv: manv.value.trim(),
-  gioitinh: gioitinh.value,
-  hoten: hoten.value.trim(),
-  hodem: hodem.value.trim(),
-  ten: ten.value.trim(),
-  ngaysinh: ngaysinh.value,
-  cccd: cccd.value.trim(),
-  ngaycap: ngaycap.value,
-  noicap: noicap.value.trim(),
-  nhanviec: nhanviec.value,
-  nhanviechd: nhanviechd.value,
-  chucvu: chucvu.value.trim(),
-  phongban: phongban.value.trim(),
-  dienthoai: dienthoai.value.trim(),
-  email: email.value.trim(),
-  tinhtrang: tinhtrang.value,
-  thuongtru: thuongtru.value.trim(),
-  tamtru: tamtru.value.trim(),
-  tinh: tinh.value.trim(),
-  huyen: huyen.value.trim(),
-  mst: mst.value.trim(),
-  bhxh: bhxh.value.trim(),
-  hocvan: hocvan.value.trim(),
-  chuyenmon: chuyenmon.value.trim()
-};
-
-const response = await fetch("https://nhanvien-form.dathongtan1810.workers.dev/", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(payload)
-});
-
-const result = await response.json();
-
-if (result.status !== "success") {
-  alert("Lỗi gửi dữ liệu: " + result.message);
-  submitBtn.innerHTML = oldHTML;
-  submitBtn.disabled = false;
-  return;
-}
-
-        // - Gọi Apps Script WebApp
-        // - Hoặc Google Sheets API backend
-        // Hiện tại demo chỉ giả lập delay 1.2s.
-
-        
-        submitBtn.innerHTML = '<span class="spinner"></span>';
-        submitBtn.disabled = true;
-
-        await new Promise(r => setTimeout(r, 1200));
-
-        submitBtn.innerHTML = oldHTML;
-        submitBtn.disabled = false;
-
-        // Hiện popup
-        popup.style.display = "flex";
-        setTimeout(() => {
-          popup.style.display = "none";
-        }, 1500);
-
-        form.reset();
-        inputs.forEach(el => el.classList.remove("border-green"));
-      });
-    });
+        }); // end submit
+      }); // end DOMContentLoaded
+    })();
   </script>
 </body>
 </html>
