@@ -455,7 +455,7 @@
           firstError.focus();
           return;
         }
-
+const oldHTML = submitBtn.innerHTML;
         // --- GỬI DỮ LIỆU TỚI CLOUDFLARE WORKER ---
 const payload = {
   manv: manv.value.trim(),
@@ -503,7 +503,7 @@ if (result.status !== "success") {
         // - Hoặc Google Sheets API backend
         // Hiện tại demo chỉ giả lập delay 1.2s.
 
-        const oldHTML = submitBtn.innerHTML;
+        
         submitBtn.innerHTML = '<span class="spinner"></span>';
         submitBtn.disabled = true;
 
