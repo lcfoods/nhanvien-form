@@ -456,8 +456,49 @@
           return;
         }
 
-        // TODO: Gửi dữ liệu lên Google Sheet tại đây
-        // Bạn có thể:
+        // --- GỬI DỮ LIỆU TỚI CLOUDFLARE WORKER ---
+const payload = {
+  manv: manv.value.trim(),
+  gioitinh: gioitinh.value,
+  hoten: hoten.value.trim(),
+  hodem: hodem.value.trim(),
+  ten: ten.value.trim(),
+  ngaysinh: ngaysinh.value,
+  cccd: cccd.value.trim(),
+  ngaycap: ngaycap.value,
+  noicap: noicap.value.trim(),
+  nhanviec: nhanviec.value,
+  nhanviechd: nhanviechd.value,
+  chucvu: chucvu.value.trim(),
+  phongban: phongban.value.trim(),
+  dienthoai: dienthoai.value.trim(),
+  email: email.value.trim(),
+  tinhtrang: tinhtrang.value,
+  thuongtru: thuongtru.value.trim(),
+  tamtru: tamtru.value.trim(),
+  tinh: tinh.value.trim(),
+  huyen: huyen.value.trim(),
+  mst: mst.value.trim(),
+  bhxh: bhxh.value.trim(),
+  hocvan: hocvan.value.trim(),
+  chuyenmon: chuyenmon.value.trim()
+};
+
+const response = await fetch("https://YOUR_WORKER_URL.workers.dev", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload)
+});
+
+const result = await response.json();
+
+if (result.status !== "success") {
+  alert("Lỗi gửi dữ liệu: " + result.message);
+  submitBtn.innerHTML = oldHTML;
+  submitBtn.disabled = false;
+  return;
+}
+
         // - Gọi Apps Script WebApp
         // - Hoặc Google Sheets API backend
         // Hiện tại demo chỉ giả lập delay 1.2s.
