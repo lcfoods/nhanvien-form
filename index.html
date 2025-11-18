@@ -133,13 +133,13 @@
         });
 
         // auto split name
-        if (hoten) hoten.addEventListener("blur", () => {
+        /*if (hoten) hoten.addEventListener("blur", () => {
           const full = hoten.value.trim().replace(/\s+/g, " ");
           if (!full) { if (hodem) hodem.value=""; if (ten) ten.value=""; return; }
           const parts = full.split(" ");
           if (parts.length===1) { if (hodem) hodem.value=""; if (ten) ten.value=parts[0]; }
           else { if (ten) ten.value = parts[parts.length-1]; if (hodem) hodem.value = parts.slice(0,-1).join(" "); }
-        });
+        });*/
 
         // helper to show tooltip
         function showTooltip(el, msg) {
