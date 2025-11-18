@@ -186,12 +186,17 @@
 
           try {
             // build payload from DOM
+            const hodemVal = document.getElementById("hodem").value.trim();
+            const tenVal = document.getElementById("ten").value.trim();
+            
             const payload = {
               manv: document.getElementById("manv").value.trim(),
               gioitinh: document.getElementById("gioitinh").value,
-              hoten: document.getElementById("hoten").value.trim(),
-              hodem: document.getElementById("hodem").value.trim(),
-              ten: document.getElementById("ten").value.trim(),
+              hodem: hodemVal,
+              ten: tenVal,
+              hoten: (hodemVal + " " + tenVal).trim(),
+
+              
               ngaysinh: document.getElementById("ngaysinh").value,
               cccd: document.getElementById("cccd").value.trim(),
               ngaycap: document.getElementById("ngaycap").value,
