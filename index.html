@@ -188,13 +188,19 @@
             // build payload from DOM
             const hodemVal = document.getElementById("hodem").value.trim();
             const tenVal = document.getElementById("ten").value.trim();
+            const fullName = (hodemVal + " " + tenVal).trim();
+
+           // GÁN NGƯỢC lại cho input hoten
+           document.getElementById("hoten").value = fullName;
+
             
             const payload = {
               manv: document.getElementById("manv").value.trim(),
               gioitinh: document.getElementById("gioitinh").value,
               hodem: hodemVal,
               ten: tenVal,
-              hoten: (hodemVal + " " + tenVal).trim(),
+              hoten: fullName,
+
 
               
               ngaysinh: document.getElementById("ngaysinh").value,
