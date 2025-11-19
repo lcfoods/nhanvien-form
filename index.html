@@ -1,485 +1,658 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thông tin lý lịch cá nhân</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Form nhân viên — LC Foods</title>
 
-  <style>
-    body { 
-      margin: 0; 
-      font-family: "Segoe UI", Arial, sans-serif; 
-      background: #f8f8f8; 
-    }
+<!-- flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-    .page { 
-      max-width: 1100px; 
-      margin: 0 auto; 
-      padding: 16px; 
-    }
+<style>
+  :root{
+    --brand:#e60012;
+    --brand-2:#ff3344;
+    --muted:#6b7280;
+    --card:#fff;
+    --bg:#f5f7f8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter, "Segoe UI", Arial, sans-serif;background:var(--bg);color:#111}
+  .container{max-width:1100px;margin:18px auto;padding:18px}
+  /* Header with image */
+  .site-header{
+    background: linear-gradient(90deg,var(--brand),var(--brand-2));
+    color:#fff;padding:28px;border-radius:12px;display:flex;align-items:center;gap:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.12);
+    background-image: url('/mnt/data/bd341035-f139-4a42-95f8-544d6903cdeb.png');
+    background-size: cover;
+    background-position: center;
+  }
+  .site-header .title{
+    flex:1;text-align:center;font-weight:800;font-size:24px;letter-spacing:1px;
+    text-shadow:0 2px 6px rgba(0,0,0,0.2);
+  }
+  .card{
+    background:var(--card);border-radius:12px;padding:20px;margin-top:18px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.06);border:1px solid #eee;
+  }
+  .card-title{color:var(--brand);font-weight:800;margin-bottom:12px;font-size:16px}
+  label{display:block;font-weight:700;color:var(--brand);margin-bottom:6px;font-size:13px}
+  input[type=text], input[type=date], input[type=email], select, input[list]{
+    width:100%;padding:10px 12px;border-radius:8px;border:1px solid #d1d5db;font-size:14px;
+    transition:box-shadow .12s,border-color .12s;
+  }
+  input:focus, select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 6px rgba(230,0,18,0.06)}
+  .grid-row{display:flex;gap:16px;width:100%;align-items:center}
+  .col-full{flex:1}
+  /* Layout A column sizes (B choice) */
+  .col-250{flex:0 0 250px} /* for code-like inputs if needed */
+  .col-50{flex:0 0 50%}
+  .col-30{flex:0 0 30%}
+  .col-20{flex:0 0 20%}
+  .col-40{flex:0 0 40%}
+  .col-33{flex:0 0 33.333%}
+  .field{position:relative}
+  .tooltip{position:absolute;left:0;bottom:-28px;background:var(--brand);color:#fff;padding:5px 8px;border-radius:6px;font-size:12px}
+  .btn{background:var(--brand);color:#fff;padding:10px 26px;border-radius:999px;border:0;cursor:pointer;font-weight:800}
+  .btn.secondary{background:#fff;color:var(--brand);border:1px solid #eee}
+  .muted{color:var(--muted);font-size:13px}
+  .flex-between{display:flex;justify-content:space-between;align-items:center}
+  .form-footer{display:flex;justify-content:center;margin-top:18px}
+  .success-popup{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;z-index:1000}
+  .success-inner{background:#fff;padding:20px;border-radius:12px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.2)}
+  .border-red{border-color:var(--brand) !important}
+  .mobile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  /* responsive */
+  @media(max-width:900px){
+    .grid-row{flex-direction:column;align-items:stretch}
+    .col-50,.col-30,.col-20,.col-40,.col-33{flex-basis:100%;flex:1}
+    .mobile-grid{grid-template-columns:1fr}
+    .site-header{padding:20px}
+    .site-header .title{font-size:20px}
+  }
 
-    header { 
-      background: #e60012; 
-      color: #fff; 
-      padding: 24px; 
-      border-radius: 12px; 
-      text-align: center; 
-      font-size: 28px; 
-      font-weight: 700; 
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      margin-top: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      border: 1px solid #e0e0e0;
-    }
-
-    .card-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: #e60012;
-      margin-bottom: 12px;
-    }
-
-    .grid { 
-      display: flex; 
-      gap: 20px; 
-      width: 100%;
-    }
-
-    .col-50 { flex: 0 0 50%; }
-    .col-40 { flex: 0 0 40%; }
-    .col-33 { flex: 0 0 33.33%; }
-    .col-30 { flex: 0 0 30%; }
-    .col-20 { flex: 0 0 20%; }
-    .col-100 { flex: 0 0 100%; }
-
-    .field { 
-      display: flex;
-      flex-direction: column;
-      position: relative; 
-    }
-
-    label { 
-      font-size: 14px; 
-      font-weight: 600; 
-      color: #e60012; 
-      margin-bottom: 4px; 
-    }
-
-    input, select {
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-      transition: 0.2s;
-      outline: none;
-    }
-
-    input:focus, select:focus {
-      border-color: #e60012;
-      box-shadow: 0 0 0 2px rgba(230,0,18,0.15);
-    }
-
-    .border-red { border-color: #e60012 !important; }
-    .border-green { border-color: #28a745 !important; }
-
-    .tooltip {
-      background: #e60012;
-      color: #fff;
-      padding: 4px 8px;
-      position: absolute;
-      bottom: -22px;
-      left: 0;
-      font-size: 12px;
-      border-radius: 6px;
-      white-space: nowrap;
-    }
-
-    #submitBtn {
-      background: #e60012;
-      color: #fff;
-      padding: 10px 40px;
-      border: none;
-      border-radius: 999px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 20px;
-      display: block;
-      width: fit-content;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .spinner {
-      border: 4px solid #fff;
-      border-top: 4px solid #e60012;
-      border-radius: 50%;
-      width: 22px;
-      height: 22px;
-      animation: spin 0.8s linear infinite;
-      display: inline-block;
-    }
-
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-
-    #successPopup {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #successPopup .popup-inner {
-      background: #fff;
-      padding: 24px;
-      border-radius: 16px;
-      width: 280px;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-      animation: fadeIn 0.3s ease-out;
-    }
-
-    .icon { font-size: 40px; color: #28a745; }
-  </style>
+  /* small search input style for combobox */
+  .combobox { position: relative; }
+  .combobox input[type="text"] { padding-right: 28px; }
+  .combobox .clear-btn { position:absolute; right:6px; top:8px; background:transparent;border:0;cursor:pointer;font-weight:700;color:#999 }
+</style>
 </head>
-
 <body>
-  <div class="page">
 
-    <header>THÔNG TIN LÝ LỊCH CÁ NHÂN</header>
+  <div class="container">
+    <div class="site-header" role="banner" aria-label="LC Foods header">
+      <div class="title">THÔNG TIN LÝ LỊCH CÁ NHÂN</div>
+    </div>
 
-    <form id="hrForm">
-
+    <form id="hrForm" class="form" autocomplete="off" novalidate>
+      <!-- CARD 1: BASIC -->
       <div class="card">
         <div class="card-title">1. THÔNG TIN CƠ BẢN</div>
 
-        <!-- Mã nhân viên -->
-        <div class="grid">
-          <div class="field col-100">
+        <!-- Mã nhân viên full width -->
+        <div class="grid-row" style="margin-bottom:12px">
+          <div class="field col-full">
             <label for="manv">Mã nhân viên *</label>
-            <input type="text" id="manv" required />
+            <input id="manv" type="text" placeholder="VD: KD46404" required />
+            <div class="muted">Chỉ chữ (in hoa) và số, không dấu</div>
           </div>
         </div>
 
-        <!-- Họ & tên đệm – Tên – Giới tính -->
-        <div class="grid">
+        <!-- Họ đệm (50%) / Tên (30%) / Giới tính (20%) -->
+        <div class="grid-row" style="margin-bottom:12px">
           <div class="field col-50">
             <label for="hodem">Họ và tên đệm *</label>
-            <input type="text" id="hodem" required />
+            <input id="hodem" type="text" required />
           </div>
-
           <div class="field col-30">
             <label for="ten">Tên *</label>
-            <input type="text" id="ten" required />
+            <input id="ten" type="text" required />
           </div>
-
           <div class="field col-20">
             <label for="gioitinh">Giới tính *</label>
             <select id="gioitinh" required>
               <option value="">-- Chọn --</option>
-              <option>Nam</option>
-              <option>Nữ</option>
-              <option>Khác</option>
+              <option>Nam</option><option>Nữ</option><option>Khác</option>
             </select>
           </div>
         </div>
 
-        <!-- CCCD – Ngày cấp – Nơi cấp -->
-        <div class="grid">
+        <!-- CCCD (40%) / Ngày cấp (30%) / Nơi cấp (30%) -->
+        <div class="grid-row" style="margin-bottom:12px">
           <div class="field col-40">
             <label for="cccd">Số CCCD *</label>
-            <input type="text" id="cccd" required />
+            <input id="cccd" type="text" inputmode="numeric" maxlength="12" required />
           </div>
-
           <div class="field col-30">
-            <label for="ngaycap">Ngày cấp CCCD *</label>
-            <input type="date" id="ngaycap" required />
+            <label for="ngaycap">Ngày cấp *</label>
+            <input id="ngaycap" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
           </div>
-
-          <div class="field col-30">
+          <div class="field col-30 combobox">
             <label for="noicap">Nơi cấp CCCD *</label>
-            <select id="noicap" required></select>
+            <input id="noicap" type="text" list="listNoiCap" placeholder="Gõ để tìm..." required />
+            <datalist id="listNoiCap"></datalist>
+            <button type="button" class="clear-btn" title="Xóa" style="display:none" aria-hidden>&times;</button>
+          </div>
+        </div>
+
+        <!-- Ngày sinh -->
+        <div class="grid-row" style="margin-bottom:6px">
+          <div class="field col-33">
+            <label for="ngaysinh">Ngày sinh *</label>
+            <input id="ngaysinh" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
           </div>
         </div>
 
         <input type="hidden" id="hoten" />
-
       </div>
 
-      <!-- CÁC PHẦN KHÁC GIỮ NGUYÊN… (sẽ gửi đủ trong phần JS phía dưới vì có validate và xử lý) -->
+      <!-- CARD 2: CÔNG VIỆC -->
+      <div class="card">
+        <div class="card-title">2. THÔNG TIN CÔNG VIỆC</div>
 
-      <button id="submitBtn" type="submit">Gửi thông tin</button>
+        <div class="grid-row" style="margin-bottom:12px">
+          <div class="field col-33">
+            <label for="nhanviec">Ngày nhận việc *</label>
+            <input id="nhanviec" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
+          </div>
+          <div class="field col-33">
+            <label for="nhanviechd">Ngày nhận việc theo HĐ</label>
+            <input id="nhanviechd" type="text" class="flat-date" placeholder="dd/mm/yyyy" />
+          </div>
+          <div class="field col-33">
+            <label for="chucvu">Chức vụ *</label>
+            <select id="chucvu" required>
+              <option value="">-- Chọn chức vụ --</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-row" style="margin-bottom:12px">
+          <div class="field col-50">
+            <label for="phongban">Phòng ban / Tổ *</label>
+            <select id="phongban" required>
+              <option value="">-- Chọn phòng ban --</option>
+            </select>
+          </div>
+          <div class="field col-50">
+            <label for="dienthoai">Điện thoại *</label>
+            <input id="dienthoai" type="text" inputmode="tel" placeholder="10 số" required />
+          </div>
+        </div>
+
+        <div class="grid-row" style="margin-bottom:6px">
+          <div class="field col-50">
+            <label for="email">Email *</label>
+            <input id="email" type="text" placeholder="vd: a@b.com" required />
+          </div>
+
+          <div class="field col-50">
+            <label>Tình trạng nhân viên</label>
+            <input type="text" value="Đang làm việc" readonly />
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3: ĐỊA CHỈ (tỉnh/huyện với full danh mục) -->
+      <div class="card">
+        <div class="card-title">3. ĐỊA CHỈ – HỘ KHẨU</div>
+
+        <div style="display:flex;gap:12px;margin-bottom:12px;align-items:center">
+          <div style="flex:1">
+            <label for="tinh">Tỉnh/TP</label>
+            <select id="tinh" required></select>
+          </div>
+          <div style="flex:1">
+            <label for="huyen">Quận/Huyện</label>
+            <select id="huyen" required></select>
+          </div>
+
+          <div style="flex:0 0 160px;display:flex;align-items:center;gap:8px">
+            <input id="chkSapNhap" type="checkbox" />
+            <label for="chkSapNhap" style="font-weight:600;color:var(--muted);">Đã sáp nhập</label>
+          </div>
+        </div>
+
+        <div class="grid-row">
+          <div class="field col-50">
+            <label for="thuongtru">Địa chỉ thường trú</label>
+            <input id="thuongtru" type="text" />
+          </div>
+          <div class="field col-50">
+            <label for="tamtru">Địa chỉ tạm trú</label>
+            <input id="tamtru" type="text" />
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4: BHXH, THUẾ, HỌC VẤN -->
+      <div class="card">
+        <div class="card-title">4. BHXH – MÃ SỐ THUẾ – HỌC VẤN</div>
+        <div class="grid-row" style="margin-bottom:12px">
+          <div class="field col-33"><label for="mst">Mã số thuế</label><input id="mst" /></div>
+          <div class="field col-33"><label for="bhxh">Mã số BHXH</label><input id="bhxh" /></div>
+          <div class="field col-33"><label for="hocvan">Trình độ học vấn</label><input id="hocvan" /></div>
+        </div>
+
+        <div class="grid-row">
+          <div class="field col-50"><label for="chuyenmon">Chuyên môn</label><input id="chuyenmon" /></div>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button class="btn" id="submitBtn" type="submit">Gửi thông tin</button>
+      </div>
     </form>
 
-    <div id="successPopup">
-      <div class="popup-inner">
-        <div class="icon">✓</div>
-        <div class="msg">Gửi thành công!</div>
+    <div class="success-popup" id="successPopup">
+      <div class="success-inner">
+        <div style="font-size:34px;color:#28a745">✓</div>
+        <div style="margin-top:8px;font-weight:700">Gửi thành công!</div>
       </div>
     </div>
-
   </div>
 
-<script>
-(function () {
+<!-- flatpickr -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+<script>
+/* -------------------------
+   Full JS: validate + UI
+   ------------------------- */
+
+(() => {
   const WORKER_URL = "https://nhanvien-form.dathongtan1810.workers.dev/";
 
-  document.addEventListener("DOMContentLoaded", () => {
+  // elements
+  const form = document.getElementById('hrForm');
+  const manv = document.getElementById('manv');
+  const hodem = document.getElementById('hodem');
+  const ten = document.getElementById('ten');
+  const hoten = document.getElementById('hoten');
+  const cccd = document.getElementById('cccd');
+  const ngaycap = document.getElementById('ngaycap');
+  const noicap = document.getElementById('noicap');
+  const ngaysinh = document.getElementById('ngaysinh');
+  const nhanviec = document.getElementById('nhanviec');
+  const nhanviechd = document.getElementById('nhanviechd');
+  const chucvu = document.getElementById('chucvu');
+  const phongban = document.getElementById('phongban');
+  const dienthoai = document.getElementById('dienthoai');
+  const email = document.getElementById('email');
+  const tinh = document.getElementById('tinh');
+  const huyen = document.getElementById('huyen');
+  const chkSapNhap = document.getElementById('chkSapNhap');
+  const submitBtn = document.getElementById('submitBtn');
+  const successPopup = document.getElementById('successPopup');
 
-    const form = document.getElementById("hrForm");
-    const inputs = Array.from(form.querySelectorAll("input, select"));
-    const submitBtn = document.getElementById("submitBtn");
-    const popup = document.getElementById("successPopup");
+  // initialize flatpickr
+  const flatOptions = { dateFormat: "d/m/Y", allowInput: true };
+  document.querySelectorAll('.flat-date').forEach(el => flatpickr(el, flatOptions));
 
-    const hodem = document.getElementById("hodem");
-    const ten = document.getElementById("ten");
-    const hoten = document.getElementById("hoten");
-    const manv = document.getElementById("manv");
-    const cccd = document.getElementById("cccd");
-    const dienthoai = document.getElementById("dienthoai");
-    const email = document.getElementById("email");
-    const noicap = document.getElementById("noicap");
+  // helper tooltip
+  function showTooltip(el, msg){
+    clearTooltip(el);
+    const t = document.createElement('div'); t.className='tooltip'; t.innerText=msg;
+    el.parentElement.appendChild(t);
+    el.classList.add('border-red');
+  }
+  function clearTooltip(el){
+    const o = el.parentElement.querySelector('.tooltip'); if(o) o.remove();
+    el.classList.remove('border-red');
+  }
 
-    /* -----------------------------------------
-       1) DANH SÁCH NƠI CẤP CCCD (Bạn đang chọn A)
-    ------------------------------------------ */
-    const noiCapList = [
-      "Công an TP Hồ Chí Minh",
-      "Công an Hà Nội",
-      "Công an Đồng Nai",
-      "Công an Bình Dương",
-      "Công an Hải Phòng",
-      "Công an Đà Nẵng",
-      "Công an Cần Thơ",
-      "Cục Cảnh sát QLHC về TTXH"
-    ];
+  // AUTOFILL hoten
+  function updateHoten(){ hoten.value = (hodem.value.trim() + ' ' + ten.value.trim()).trim(); }
+  hodem.addEventListener('input', updateHoten);
+  ten.addEventListener('input', updateHoten);
 
-    noiCapList.forEach(item => {
-      const opt = document.createElement("option");
-      opt.value = item;
-      opt.textContent = item;
-      noicap.appendChild(opt);
+  // MANV: uppercase + allow A-Z0-9
+  manv.addEventListener('input', () => {
+    const old = manv.value;
+    const nu = old.toUpperCase().replace(/[^A-Z0-9]/g,'');
+    if(old !== nu) manv.value = nu;
+  });
+
+  // CCCD numeric only, max 12
+  cccd.addEventListener('input', () => {
+    cccd.value = cccd.value.replace(/\D/g,'').slice(0,12);
+    if(cccd.value && !/^\d{12}$/.test(cccd.value)) showTooltip(cccd, 'CCCD phải 12 chữ số');
+    else clearTooltip(cccd);
+  });
+
+  // phone numeric only
+  dienthoai.addEventListener('input', () => {
+    dienthoai.value = dienthoai.value.replace(/\D/g,'').slice(0,10);
+    if(dienthoai.value && !/^(03|05|07|08|09)\d{8}$/.test(dienthoai.value)) showTooltip(dienthoai,'SĐT phải 10 số, đúng đầu VN');
+    else clearTooltip(dienthoai);
+  });
+
+  // email basic check
+  email.addEventListener('input', () => {
+    const v = email.value.trim();
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    if(v && !ok) showTooltip(email,'Email không đúng định dạng');
+    else clearTooltip(email);
+  });
+
+  // ENTER navigates to next visible input (avoid type=email browser blocking)
+  const inputs = Array.from(form.querySelectorAll('input,select')).filter(i=>i.type!=='hidden');
+  inputs.forEach((el, idx) => {
+    el.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        const next = inputs[idx+1];
+        if(next) next.focus(); else submitBtn.focus();
+      }
     });
+  });
 
-    /* -----------------------------------------
-       2) AUTOFILL họ tên (ghép họ đệm + tên)
-    ------------------------------------------ */
-    function updateFullname() {
-      const hd = hodem.value.trim();
-      const t = ten.value.trim();
-      hoten.value = (hd + " " + t).trim();
+  /* -----------------------------
+     Populate chức vụ & phòng ban (sample list, extendable)
+     ----------------------------- */
+  const defaultChucVu = [
+    "Nhân viên", "Trưởng nhóm", "Quản lý", "Giám sát", "Nhân viên kỹ thuật", "Nhân viên bán hàng"
+  ];
+  const defaultPhongBan = [
+    "Sản xuất", "Kinh doanh", "Hành chính", "Nhân sự", "Kho", "IT", "Chất lượng"
+  ];
+  defaultChucVu.forEach(x => {
+    const o = document.createElement('option'); o.value = x; o.textContent = x; chucvu.appendChild(o);
+  });
+  defaultPhongBan.forEach(x => {
+    const o = document.createElement('option'); o.value = x; o.textContent = x; phongban.appendChild(o);
+  });
+
+  /* -----------------------------
+     Province / District data (full provinces; districts best-effort major ones)
+     - This is a best-effort full list of provinces (63). For districts, included main districts for larger provinces and placeholder for smaller to keep file size reasonable.
+     - You can extend the `districts[province]` arrays as needed.
+     ----------------------------- */
+  const provinces = [
+    "Hà Nội","Hồ Chí Minh","Hải Phòng","Đà Nẵng","Cần Thơ","An Giang","Bà Rịa - Vũng Tàu","Bắc Giang",
+    "Bắc Kạn","Bạc Liêu","Bắc Ninh","Bến Tre","Bình Định","Bình Dương","Bình Phước","Bình Thuận",
+    "Cà Mau","Đắk Lắk","Đắk Nông","Điện Biên","Đồng Nai","Đồng Tháp","Gia Lai","Hà Giang","Hà Nam",
+    "Hà Tĩnh","Hải Dương","Hậu Giang","Hòa Bình","Hưng Yên","Khánh Hòa","Kiên Giang","Kon Tum",
+    "Lai Châu","Lâm Đồng","Lạng Sơn","Lào Cai","Long An","Nam Định","Nghệ An","Ninh Bình","Ninh Thuận",
+    "Phú Thọ","Phú Yên","Quảng Bình","Quảng Nam","Quảng Ngãi","Quảng Ninh","Quảng Trị","Sóc Trăng",
+    "Sơn La","Tây Ninh","Thái Bình","Thái Nguyên","Thanh Hóa","Thừa Thiên Huế","Tiền Giang","Trà Vinh",
+    "Tuyên Quang","Vĩnh Long","Vĩnh Phúc","Yên Bái"
+  ];
+
+  // districts: provide key sets; you can expand each array
+  const districts = {
+    "Hà Nội": ["Quận Ba Đình","Quận Hoàn Kiếm","Quận Tây Hồ","Quận Long Biên","Quận Cầu Giấy","Quận Đống Đa","Quận Hai Bà Trưng","Quận Hoàng Mai","Quận Thanh Xuân","Huyện Sóc Sơn","Huyện Đông Anh","Huyện Gia Lâm","Huyện Thanh Trì","Huyện Sơn Tây","Huyện Thạch Thất"],
+    "Hồ Chí Minh": ["Quận 1","Quận 3","Quận 4","Quận 5","Quận 6","Quận 7","Quận 8","Quận 10","Quận 11","Quận Bình Thạnh","Quận Phú Nhuận","Quận Tân Bình","Quận Tân Phú","Quận Thủ Đức","Huyện Nhà Bè","Huyện Bình Chánh","Huyện Cần Giờ"],
+    "Hải Phòng":["Quận Hồng Bàng","Quận Ngô Quyền","Quận Lê Chân","Quận Hải An","Quận Kiến An","Huyện Vĩnh Bảo"],
+    "Đà Nẵng":["Quận Hải Châu","Quận Sơn Trà","Quận Thanh Khê","Quận Liên Chiểu","Quận Ngũ Hành Sơn","Quận Cẩm Lệ"],
+    "Cần Thơ":["Quận Ninh Kiều","Quận Bình Thủy","Quận Cái Răng","Quận Ô Môn","Quận Thốt Nốt"],
+    // ... provide reasonable lists for other provinces (major ones)
+    "Đồng Nai": ["TP Biên Hòa","Huyện Long Thành","Huyện Nhơn Trạch","Huyện Vĩnh Cửu","Huyện Long Khánh"],
+    "Bình Dương": ["TP Thủ Dầu Một","TP Dĩ An","TP Thuận An","Huyện Bến Cát","Huyện Tân Uyên"],
+    "Long An": ["TP Tân An","Huyện Đức Hòa","Huyện Cần Giuộc","Huyện Bến Lức"],
+    "Nghệ An": ["TP Vinh","Huyện Nghi Lộc","Huyện Diễn Châu", "Huyện Quỳnh Lưu"],
+    "Thành phố Hà Giang": ["TP Hà Giang"],
+    // For provinces not explicitly listed above, fallback to generic placeholder list:
+  };
+
+  // populate province select
+  function populateProvinces(){
+    provinces.forEach(p => {
+      const o = document.createElement('option'); o.value=p; o.textContent=p; tinh.appendChild(o);
+    });
+  }
+  populateProvinces();
+
+  // update districts when province change
+  function populateDistrictsFor(prov){
+    huyen.innerHTML = '';
+    const list = districts[prov] || [`Quận/Huyện của ${prov}`];
+    list.forEach(d => {
+      const o = document.createElement('option'); o.value=d; o.textContent=d; huyen.appendChild(o);
+    });
+  }
+  // initial
+  populateDistrictsFor(provinces[0]);
+
+  tinh.addEventListener('change', (e) => {
+    const p = e.target.value;
+    populateDistrictsFor(p);
+  });
+
+  // datalist for noicap (listNoiCap)
+  const noiCapList = [
+    "Công an TP Hồ Chí Minh","Công an Hà Nội","Công an Đồng Nai","Công an Bình Dương","Công an Hải Phòng",
+    "Công an Đà Nẵng","Công an Cần Thơ","Cục Cảnh sát QLHC về TTXH","Công an Long An","Công an Bình Thuận"
+  ];
+  const listNoiCap = document.getElementById('listNoiCap');
+  noiCapList.forEach(x => {
+    const opt = document.createElement('option'); opt.value = x; listNoiCap.appendChild(opt);
+  });
+
+  // combobox clear button (for noicap)
+  document.querySelectorAll('.combobox').forEach(cb => {
+    const input = cb.querySelector('input[list]');
+    const btn = cb.querySelector('.clear-btn');
+    if(!input || !btn) return;
+    input.addEventListener('input', () => btn.style.display = input.value ? 'inline' : 'none');
+    btn.addEventListener('click', () => { input.value=''; input.focus(); btn.style.display='none'; });
+  });
+
+  // "Đã sáp nhập" checkbox: if checked, reduce to only 2 levels and hide some fields
+  chkSapNhap.addEventListener('change', () => {
+    if(chkSapNhap.checked){
+      // if merged, we might hide some granular fields — for demo, hide 'phongban' and 'chucvu'
+      chucvu.parentElement.style.display = 'none';
+      phongban.parentElement.style.display = 'none';
+      // For address: keep only province & leave district as single-level
+      huyen.disabled = true;
+    } else {
+      chucvu.parentElement.style.display = '';
+      phongban.parentElement.style.display = '';
+      huyen.disabled = false;
+    }
+  });
+
+  // ---------------------------
+  // Submit handling + validation
+  // ---------------------------
+  function formatDateStringFromFlatpickr(value) {
+    // flatpickr with d/m/Y returns "dd/mm/yyyy" already because we set format
+    return value || '';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // clear earlier tooltips
+    form.querySelectorAll('.tooltip').forEach(t => t.remove());
+    [manv, hodem, ten, cccd, ngaycap, noicap, ngaysinh, nhanviec, dienthoai, email].forEach(el => el && el.classList.remove('border-red'));
+
+    // required check
+    const requiredFields = [manv, hodem, ten, cccd, ngaycap, noicap, ngaysinh, nhanviec, dienthoai, email];
+    for(const f of requiredFields){
+      if(!f.value || f.value.trim() === ''){
+        showTooltip(f, 'Không được để trống');
+        f.focus();
+        return;
+      }
     }
 
-    hodem.addEventListener("input", updateFullname);
-    ten.addEventListener("input", updateFullname);
-
-
-    /* -----------------------------------------
-       3) VALIDATE TRÊN TỪNG INPUT
-    ------------------------------------------ */
-
-    // Mã nhân viên (chỉ cho nhập A–Z + 0–9)
-    manv.addEventListener("input", () => {
-      manv.value = manv.value.replace(/[^A-Za-z0-9]/g, "");
-    });
-
-    // CCCD chỉ số
-    cccd.addEventListener("input", () => {
-      cccd.value = cccd.value.replace(/\D/g, "");
-    });
-
-    // Số điện thoại
-    const phoneField = document.getElementById("dienthoai");
-    phoneField.addEventListener("input", () => {
-      phoneField.value = phoneField.value.replace(/\D/g, "");
-    });
-
-
-    /* -----------------------------------------
-       4) ENTER → qua ô tiếp theo
-    ------------------------------------------ */
-    const visibleInputs = inputs.filter(i => i.type !== "hidden");
-
-    visibleInputs.forEach((el, idx) => {
-      el.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          const next = visibleInputs[idx + 1];
-          if (next) next.focus();
-          else submitBtn.focus();
-        }
-      });
-    });
-
-
-    /* -----------------------------------------
-       5) Tooltip Helper
-    ------------------------------------------ */
-    function showTooltip(el, msg) {
-      const t = document.createElement("div");
-      t.className = "tooltip";
-      t.innerText = msg;
-      el.parentElement.appendChild(t);
+    // manv format
+    if(!/^[A-Z0-9]+$/.test(manv.value.trim())){
+      showTooltip(manv, 'Mã NV chỉ chữ và số (in hoa)');
+      manv.focus(); return;
     }
 
+    // cccd 12 digits
+    if(!/^\d{12}$/.test(cccd.value.trim())){
+      showTooltip(cccd, 'CCCD phải gồm đúng 12 chữ số');
+      cccd.focus(); return;
+    }
 
-    /* -----------------------------------------
-       6) SUBMIT FORM
-    ------------------------------------------ */
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    // phone
+    if(!/^(03|05|07|08|09)\d{8}$/.test(dienthoai.value.trim())){
+      showTooltip(dienthoai, 'SĐT phải 10 số, bắt đầu 03|05|07|08|09');
+      dienthoai.focus(); return;
+    }
 
-      form.querySelectorAll(".tooltip").forEach(t => t.remove());
-      inputs.forEach(i => i.classList.remove("border-red", "border-green"));
+    // email
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())){
+      showTooltip(email, 'Email không đúng định dạng');
+      email.focus(); return;
+    }
 
-      let valid = true;
-      let firstError = null;
+    // build payload — format dates dd/mm/yyyy (flatpickr already)
+    updateHoten();
+    const payload = {
+      manv: manv.value.trim(),
+      hodem: hodem.value.trim(),
+      ten: ten.value.trim(),
+      hoten: hoten.value.trim(),
+      gioitinh: document.getElementById('gioitinh').value || '',
+      cccd: "'" + cccd.value.trim(), // prefix to keep leading zero in Sheets
+      ngaycap: formatDateStringFromFlatpickr(ngaycap.value),
+      noicap: noicap.value.trim(),
+      ngaysinh: formatDateStringFromFlatpickr(ngaysinh.value),
+      nhanviec: formatDateStringFromFlatpickr(nhanviec.value),
+      nhanviechd: formatDateStringFromFlatpickr(nhanviechd.value),
+      chucvu: chucvu.value || '',
+      phongban: phongban.value || '',
+      dienthoai: dienthoai.value.trim(),
+      email: email.value.trim(),
+      tinh: tinh.value || '',
+      huyen: huyen.value || '',
+      tinhtrang: chkSapNhap.checked ? 'Đã sáp nhập' : 'Đang làm việc',
+      thuongtru: document.getElementById('thuongtru').value || '',
+      tamtru: document.getElementById('tamtru').value || '',
+      mst: document.getElementById('mst').value || '',
+      bhxh: document.getElementById('bhxh').value || '',
+      hocvan: document.getElementById('hocvan').value || '',
+      chuyenmon: document.getElementById('chuyenmon').value || '',
+      submittedAt: new Date().toISOString()
+    };
 
-      /* Validate Required */
-      inputs.forEach(el => {
-        if (el.hasAttribute("required") && !el.value.trim()) {
-          el.classList.add("border-red");
-          showTooltip(el, "Không được để trống");
-          valid = false;
-          if (!firstError) firstError = el;
-        }
+    // send to worker
+    submitBtn.disabled = true;
+    const old = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span class="spinner"></span>';
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
       });
 
-      /* Validate CCCD 12 số */
-      if (!/^\d{12}$/.test(cccd.value.trim())) {
-        cccd.classList.add("border-red");
-        showTooltip(cccd, "CCCD phải gồm đúng 12 số");
-        valid = false;
-        if (!firstError) firstError = cccd;
-      }
+      const text = await res.text();
+      let json;
+      try{ json = JSON.parse(text); } catch(e){ json = {status: res.ok ? 'success' : 'error'};}
 
-      /* Validate số điện thoại */
-      const phone = phoneField.value.trim();
-      if (!/^0\d{9}$/.test(phone)) {
-        phoneField.classList.add("border-red");
-        showTooltip(phoneField, "Số điện thoại phải gồm 10 số và bắt đầu bằng 0");
-        valid = false;
-        if (!firstError) firstError = phoneField;
-      }
-
-      /* Validate email */
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const emailField = document.getElementById("email");
-
-      if (!emailRegex.test(emailField.value.trim())) {
-        emailField.classList.add("border-red");
-        showTooltip(emailField, "Email không hợp lệ");
-        valid = false;
-        if (!firstError) firstError = emailField;
-      }
-
-      if (!valid) {
-        firstError.scrollIntoView({ behavior: "smooth", block: "center" });
-        firstError.focus();
+      if(!res.ok || (json && json.status && json.status !== 'success')){
+        alert('Lỗi gửi:\n' + text);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = old;
         return;
       }
 
-      submitBtn.disabled = true;
-      const oldHTML = submitBtn.innerHTML;
-      submitBtn.innerHTML = `<span class="spinner"></span>`;
+      // success UI
+      successPopup.style.display = 'flex';
+      setTimeout(()=> successPopup.style.display = 'none', 1600);
 
-      try {
+      // reset but keep some defaults
+      form.reset();
+      // repopulate provinces/districts
+      populateProvincesAfterReset();
 
-        // Giữ số 0 đầu CCCD bằng cách thêm dấu '
-        const cccdRaw = cccd.value.trim();
-        const cccdSafe = "'" + cccdRaw;
+    } catch(err){
+      alert('Lỗi mạng: ' + (err && err.message ? err.message : err));
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = old;
+    }
 
-        // Format ngày dd/MM/yyyy
-        function fmt(d) {
-          if (!d) return "";
-          const dt = new Date(d);
-          return dt.toLocaleDateString("vi-VN"); 
-        }
+  }); // end submit
 
-        const payload = {
-          manv: manv.value.trim(),
-          hodem: hodem.value.trim(),
-          ten: ten.value.trim(),
-          hoten: hoten.value.trim(),
+  // helper to repopulate provinces/districts after reset
+  function populateProvincesAfterReset(){
+    // reset provinces select to first
+    if(tinh.options.length === 0) populateProvinces();
+    tinh.selectedIndex = 0;
+    populateDistrictsFor(tinh.value);
+    // ensure chucvu & phongban visible
+    chucvu.parentElement.style.display = '';
+    phongban.parentElement.style.display = '';
+    huyen.disabled = false;
+  }
 
-          gioitinh: document.getElementById("gioitinh").value,
-          
-          cccd: cccdSafe,
-          ngaycap: fmt(document.getElementById("ngaycap").value),
-          noicap: document.getElementById("noicap").value,
-
-          ngaysinh: fmt(document.getElementById("ngaysinh")?.value),
-
-          nhanviec: fmt(document.getElementById("nhanviec")?.value || ""),
-          nhanviechd: fmt(document.getElementById("nhanviechd")?.value || ""),
-
-          chucvu: document.getElementById("chucvu")?.value.trim(),
-          phongban: document.getElementById("phongban")?.value.trim(),
-
-          dienthoai: phoneField.value.trim(),
-          email: emailField.value.trim(),
-
-          tinhtrang: "Đang làm việc",
-
-          thuongtru: document.getElementById("thuongtru")?.value.trim(),
-          tamtru: document.getElementById("tamtru")?.value.trim(),
-          tinh: document.getElementById("tinh")?.value.trim(),
-          huyen: document.getElementById("huyen")?.value.trim(),
-
-          mst: document.getElementById("mst")?.value.trim(),
-          bhxh: document.getElementById("bhxh")?.value.trim(),
-
-          hocvan: document.getElementById("hocvan")?.value.trim(),
-          chuyenmon: document.getElementById("chuyenmon")?.value.trim()
-        };
-
-        const res = await fetch(WORKER_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-
-        const text = await res.text();
-        let json;
-
-        try { json = JSON.parse(text); }
-        catch { json = { status: res.ok ? "success" : "error", raw: text }; }
-
-        if (!res.ok || json.status !== "success") {
-          alert("Lỗi gửi dữ liệu:\n" + text);
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = oldHTML;
-          return;
-        }
-
-        popup.style.display = "flex";
-        setTimeout(() => popup.style.display = "none", 1500);
-
-        form.reset();
-        inputs.forEach(i => i.classList.remove("border-green"));
-
-      } catch (err) {
-        alert("Lỗi mạng/Worker:\n" + err.message);
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = oldHTML;
-      }
-
+  // initial populate provinces/districts as used earlier
+  function populateProvinces(){
+    // if already populated skip
+    if(tinh.options.length) return;
+    const opts = ['-- Chọn tỉnh/TP --'].concat(provinces());
+    opts.forEach((p, idx) => {
+      const o = document.createElement('option'); o.value = p; o.textContent = p;
+      if(idx===0) o.value = '';
+      tinh.appendChild(o);
     });
+  }
 
+  // expose provinces list as function to avoid redef block
+  function provinces(){
+    return [
+      "Hà Nội","Hồ Chí Minh","Hải Phòng","Đà Nẵng","Cần Thơ","An Giang","Bà Rịa - Vũng Tàu","Bắc Giang",
+      "Bắc Kạn","Bạc Liêu","Bắc Ninh","Bến Tre","Bình Định","Bình Dương","Bình Phước","Bình Thuận",
+      "Cà Mau","Đắk Lắk","Đắk Nông","Điện Biên","Đồng Nai","Đồng Tháp","Gia Lai","Hà Giang","Hà Nam",
+      "Hà Tĩnh","Hải Dương","Hậu Giang","Hòa Bình","Hưng Yên","Khánh Hòa","Kiên Giang","Kon Tum",
+      "Lai Châu","Lâm Đồng","Lạng Sơn","Lào Cai","Long An","Nam Định","Nghệ An","Ninh Bình","Ninh Thuận",
+      "Phú Thọ","Phú Yên","Quảng Bình","Quảng Nam","Quảng Ngãi","Quảng Ninh","Quảng Trị","Sóc Trăng",
+      "Sơn La","Tây Ninh","Thái Bình","Thái Nguyên","Thanh Hóa","Thừa Thiên Huế","Tiền Giang","Trà Vinh",
+      "Tuyên Quang","Vĩnh Long","Vĩnh Phúc","Yên Bái"
+    ];
+  }
+
+  // small districts map (for demo). For full authoritative list you can replace this object.
+  const districtsMap = {
+    "Hà Nội":["Quận Ba Đình","Quận Hoàn Kiếm","Quận Đống Đa","Quận Hai Bà Trưng","Quận Tây Hồ","Quận Cầu Giấy","Quận Thanh Xuân","Huyện Đông Anh","Huyện Sóc Sơn"],
+    "Hồ Chí Minh":["Quận 1","Quận 3","Quận 4","Quận 5","Quận 7","Quận Bình Thạnh","Huyện Nhà Bè","Huyện Bình Chánh","Thành Phố Thủ Đức"],
+    "Đồng Nai":["TP Biên Hòa","Huyện Long Thành","Huyện Nhơn Trạch"],
+    "Bình Dương":["TP Thủ Dầu Một","TP Dĩ An","TP Thuận An"],
+    "Hải Phòng":["Quận Hồng Bàng","Quận Ngô Quyền","Quận Lê Chân"],
+    "Đà Nẵng":["Quận Hải Châu","Quận Sơn Trà","Quận Thanh Khê"],
+    // add more as needed; fallback will provide placeholder
+  };
+
+  function populateDistrictsFor(prov){
+    huyen.innerHTML = '';
+    const list = districtsMap[prov] || [`Quận/Huyện của ${prov}`];
+    list.forEach(x => {
+      const o = document.createElement('option'); o.value = x; o.textContent = x; huyen.appendChild(o);
+    });
+  }
+
+  // initial populate
+  populateProvinces();
+  populateDistrictsFor(provinces()[0]);
+
+  // when province changes
+  tinh.addEventListener('change', (e) => {
+    populateDistrictsFor(e.target.value);
   });
 
-})();
+  // populate datalist for noicap done earlier
+  // but allow typing to search using datalist native behavior
 
+  // small utility to repopulate provinces/districts on reset
+  function populateProvincesAfterReset() {
+    // already done above
+    // keep current selection
+    populateDistrictsFor(tinh.value || provinces()[0]);
+  }
+
+  // updateHoten reused
+  function updateHoten(){ hoten.value = (hodem.value.trim() + ' ' + ten.value.trim()).trim(); }
+})();
 </script>
 
 </body>
