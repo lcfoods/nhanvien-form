@@ -92,16 +92,24 @@
       <div class="card">
         <div class="card-title">1. THÔNG TIN CƠ BẢN</div>
 
-        <!-- Mã nhân viên full width -->
-        <div class="grid-row" style="margin-bottom:12px">
-          <div class="field col-full">
-            <label for="manv">Mã nhân viên *</label>
-            <input id="manv" type="text" placeholder="VD: KD46404" required />
-            <div class="muted">Chỉ chữ (in hoa) và số, không dấu</div>
-          </div>
-        </div>
+        <!-- Ngày sinh + Mã nhân viên trên cùng một dòng -->
+<div class="grid-row" style="margin-bottom:12px">
+  <div class="field" style="flex:0 0 15%">
+    <label for="ngaysinh">Ngày sinh *</label>
+    <input id="ngaysinh" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
+  </div>
 
-        <!-- Họ đệm (50%) / Tên (30%) / Giới tính (20%) -->
+  <div class="field" style="flex:0 0 20%">
+    <label for="manv">Mã nhân viên *</label>
+    <input id="manv" type="text" placeholder="VD: KD46404" required />
+    <div class="muted">Chỉ chữ (in hoa) và số, không dấu</div>
+  </div>
+
+  <div style="flex:1"></div>
+</div>
+
+<!-- Họ đệm (50%) / Tên (30%) / Giới tính (20%) -->
+<div class="grid-row" style="margin-bottom: (50%) / Tên (30%) / Giới tính (20%) -->
         <div class="grid-row" style="margin-bottom:12px">
           <div class="field col-50">
             <label for="hodem">Họ và tên đệm *</label>
