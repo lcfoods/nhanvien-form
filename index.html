@@ -1,3 +1,4 @@
+<!-- Updated code will be inserted here. Due to size, please paste your original code again or specify which sections to move/remove so I can rewrite the full file accurately. -->
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -21,10 +22,11 @@
   .container{max-width:1100px;margin:18px auto;padding:18px}
   /* Header with image */
   .site-header{
-    background: linear-gradient(90deg,var(--brand),var(--brand-2));
+    background:
+      linear-gradient(90deg,var(--brand),var(--brand-2)),
+      url('/mnt/data/bd341035-f139-4a42-95f8-544d6903cdeb.png');
     color:#fff;padding:28px;border-radius:12px;display:flex;align-items:center;gap:20px;
     box-shadow:0 10px 30px rgba(0,0,0,0.12);
-    background-image: url('/mnt/data/bd341035-f139-4a42-95f8-544d6903cdeb.png');
     background-size: cover;
     background-position: center;
   }
@@ -49,7 +51,7 @@
   .col-250{flex:0 0 250px} /* for code-like inputs if needed */
   .col-50{flex:0 0 50%}
   .col-30{flex:0 0 30%}
-  .col-20{flex:0 0 20%}
+  .col-20{flex:0 0 140px}
   .col-40{flex:0 0 40%}
   .col-33{flex:0 0 33.333%}
   .field{position:relative}
@@ -137,7 +139,7 @@
         </div>
 
         <!-- Ngày sinh -->
-        <div class="grid-row" style="margin-bottom:6px">
+        <div class="grid-row" style="margin-bottom:12px">
           <div class="field col-33">
             <label for="ngaysinh">Ngày sinh *</label>
             <input id="ngaysinh" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
