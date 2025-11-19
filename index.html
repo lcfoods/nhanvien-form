@@ -1,297 +1,327 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Thông tin lý lịch cá nhân</title>
-
   <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #f3f4f6;
-    }
-
-    .page {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    header {
-      background: linear-gradient(45deg, #e60012, #ff3344);
-      color: white;
-      padding: 32px 24px;
-      text-align: center;
-      font-size: 30px;
-      border-radius: 20px;
-      font-weight: 700;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      margin-bottom: 20px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 26px;
-      margin-top: 22px;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.08);
-      border: 1px solid #ececec;
-    }
-
-    .card-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #e60012;
-      margin-bottom: 16px;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px 30px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    label {
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #e60012;
-      font-size: 14px;
-    }
-
-    input, select {
-      padding: 10px 14px;
-      font-size: 15px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      transition: 0.2s;
-    }
-
-    input:focus, select:focus {
-      border-color: #e60012;
-      box-shadow: 0 0 0 3px rgba(230,0,18,0.18);
-    }
-
-    .tooltip {
-      background: #e60012;
-      color: white;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 12px;
-      position: absolute;
-      bottom: -22px;
-      left: 0;
-      white-space: nowrap;
-    }
-
-    #submitBtn {
-      background: #e60012;
-      color: white;
-      padding: 12px 45px;
-      border-radius: 999px;
-      border: none;
-      font-weight: 700;
-      font-size: 17px;
-      cursor: pointer;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-      transition: 0.2s;
-    }
-
-    #submitBtn:hover {
-      background: #c80010;
-      transform: translateY(-2px);
-    }
-
-    .spinner {
-      border: 4px solid white;
-      border-top: 4px solid #e60012;
-      border-radius: 50%;
-      width: 22px;
-      height: 22px;
-      animation: spin 0.8s linear infinite;
-      display: inline-block;
-    }
-
-    @keyframes spin { 100% { transform: rotate(360deg); } }
+    body{margin:0;font-family:"Segoe UI",Arial, sans-serif;background:#f3f4f6}
+    .page{max-width:1100px;margin:0 auto;padding:20px}
+    header{background:linear-gradient(45deg,#e60012,#ff3344);color:#fff;padding:28px;border-radius:18px;text-align:center;font-size:28px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,0.12);margin-bottom:20px}
+    .card{background:#fff;border-radius:14px;padding:22px;margin-top:18px;box-shadow:0 6px 18px rgba(0,0,0,0.06);border:1px solid #eee}
+    .card-title{font-size:18px;font-weight:700;color:#e60012;margin-bottom:12px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 20px}
+    .field{display:flex;flex-direction:column;position:relative}
+    label{font-weight:600;margin-bottom:6px;color:#e60012;font-size:13px}
+    input,select,textarea{padding:10px 12px;border-radius:10px;border:1px solid #d0d5db;font-size:14px;outline:none;transition:box-shadow .15s,border-color .15s}
+    input:focus,select:focus,textarea:focus{box-shadow:0 0 0 4px rgba(230,0,18,0.12);border-color:#e60012}
+    .tooltip{background:#e60012;color:#fff;padding:4px 8px;border-radius:6px;font-size:12px;position:absolute;bottom:-26px;left:0;white-space:nowrap;z-index:30}
+    #submitBtn{background:#e60012;color:#fff;padding:12px 44px;border-radius:999px;border:none;font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,0.12)}
+    #submitBtn:hover{transform:translateY(-2px);background:#c80010}
+    .spinner{border:4px solid #fff;border-top:4px solid #e60012;border-radius:50%;width:20px;height:20px;animation:spin .8s linear infinite;display:inline-block}
+    @keyframes spin{100%{transform:rotate(360deg)}}
+    @media(max-width:780px){.grid-2{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
+  <div class="page">
+    <header>THÔNG TIN LÝ LỊCH CÁ NHÂN</header>
 
-<div class="page">
+    <form id="hrForm">
+      <!-- HIDDEN HOTEN -->
+      <input type="hidden" id="hoten"/>
 
-  <header>THÔNG TIN LÝ LỊCH CÁ NHÂN</header>
-
-  <form id="hrForm">
-
-    <div class="card">
-      <div class="card-title">1. THÔNG TIN CƠ BẢN</div>
-      <div class="grid-2">
-
-        <div class="field">
-          <label>Mã nhân viên *</label>
-          <input id="manv" required />
+      <!-- KHỐI 1: THÔNG TIN CƠ BẢN -->
+      <div class="card">
+        <div class="card-title">1. THÔNG TIN CƠ BẢN</div>
+        <div class="grid-2">
+          <div class="field"><label for="manv">Mã nhân viên *</label><input id="manv" type="text" required placeholder="VD: KD46404"/></div>
+          <div class="field"><label for="hodem">Họ và tên đệm *</label><input id="hodem" type="text" required/></div>
+          <div class="field"><label for="ten">Tên *</label><input id="ten" type="text" required/></div>
+          <div class="field"><label for="gioitinh">Giới tính *</label><select id="gioitinh" required><option value="">-- Chọn --</option><option>Nam</option><option>Nữ</option><option>Khác</option></select></div>
+          <div class="field"><label for="ngaysinh">Ngày sinh *</label><input id="ngaysinh" type="date" required/></div>
         </div>
+      </div>
 
-        <div class="field">
-          <label>Họ và tên đệm *</label>
-          <input id="hodem" required />
+      <!-- KHỐI 2: CCCD -->
+      <div class="card">
+        <div class="card-title">2. THÔNG TIN CCCD</div>
+        <div class="grid-2">
+          <div class="field"><label for="cccd">Số CCCD *</label><input id="cccd" type="text" required/></div>
+          <div class="field"><label for="ngaycap">Ngày cấp *</label><input id="ngaycap" type="date" required/></div>
+          <div class="field"><label for="noicap">Nơi cấp *</label><input id="noicap" type="text" required/></div>
         </div>
+      </div>
 
-        <div class="field">
-          <label>Tên *</label>
-          <input id="ten" required />
+      <!-- KHỐI 3: CÔNG VIỆC -->
+      <div class="card">
+        <div class="card-title">3. THÔNG TIN CÔNG VIỆC</div>
+        <div class="grid-2">
+          <div class="field"><label for="nhanviec">Ngày nhận việc thực tế *</label><input id="nhanviec" type="date" required/></div>
+          <div class="field"><label for="nhanviechd">Ngày nhận việc theo HĐ</label><input id="nhanviechd" type="date"/></div>
+          <div class="field"><label for="chucvu">Chức vụ *</label><input id="chucvu" type="text" required/></div>
+          <div class="field"><label for="phongban">Phòng ban / Tổ *</label><input id="phongban" type="text" required/></div>
+          <div class="field"><label for="dienthoai">Điện thoại di động *</label><input id="dienthoai" type="text" required placeholder="10 số, VD: 0912345678"/></div>
+          <div class="field"><label for="email">Email *</label><input id="email" type="email" required placeholder="vd: a@b.com"/></div>
+          <div class="field"><label for="tinhtrang">Tình trạng nhân viên</label>
+            <select id="tinhtrang" disabled>
+              <option selected>Đang làm việc</option>
+            </select>
+          </div>
         </div>
+      </div>
 
-        <input type="hidden" id="hoten" />
-
-        <div class="field">
-          <label>Giới tính *</label>
-          <select id="gioitinh" required>
-            <option value="">-- Chọn --</option>
-            <option>Nam</option>
-            <option>Nữ</option>
-            <option>Khác</option>
-          </select>
+      <!-- KHỐI 4: ĐỊA CHỈ – HỘ KHẨU -->
+      <div class="card">
+        <div class="card-title">4. ĐỊA CHỈ – HỘ KHẨU</div>
+        <div class="grid-2">
+          <div class="field"><label for="thuongtru">Địa chỉ thường trú</label><input id="thuongtru" type="text"/></div>
+          <div class="field"><label for="tamtru">Địa chỉ tạm trú</label><input id="tamtru" type="text"/></div>
+          <div class="field"><label for="tinh">Tỉnh/TP</label><input id="tinh" type="text"/></div>
+          <div class="field"><label for="huyen">Quận/Huyện</label><input id="huyen" type="text"/></div>
         </div>
+      </div>
 
-        <div class="field">
-          <label>Ngày sinh *</label>
-          <input type="date" id="ngaysinh" required />
+      <!-- KHỐI 5: BHXH – THUẾ -->
+      <div class="card">
+        <div class="card-title">5. BHXH – MÃ SỐ THUẾ</div>
+        <div class="grid-2">
+          <div class="field"><label for="mst">Mã số thuế</label><input id="mst" type="text"/></div>
+          <div class="field"><label for="bhxh">Mã số BHXH</label><input id="bhxh" type="text"/></div>
         </div>
+      </div>
 
+      <!-- KHỐI 6: HỌC VẤN – CHUYÊN MÔN -->
+      <div class="card">
+        <div class="card-title">6. HỌC VẤN – CHUYÊN MÔN</div>
+        <div class="grid-2">
+          <div class="field"><label for="hocvan">Trình độ học vấn</label><input id="hocvan" type="text"/></div>
+          <div class="field"><label for="chuyenmon">Chuyên môn</label><input id="chuyenmon" type="text"/></div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:18px">
+        <button id="submitBtn" type="submit">Gửi thông tin</button>
+      </div>
+    </form>
+
+    <div id="successPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);align-items:center;justify-content:center;z-index:50">
+      <div style="background:#fff;padding:20px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.2);text-align:center;width:260px">
+        <div style="font-size:28px;color:#28a745">✓</div>
+        <div style="margin-top:6px">Gửi thành công!</div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">3. THÔNG TIN CÔNG VIỆC</div>
-      <div class="grid-2">
-
-        <div class="field">
-          <label>Ngày nhận việc *</label>
-          <input type="date" id="nhanviec" required />
-        </div>
-
-        <div class="field">
-          <label>Tình trạng nhân viên</label>
-          <select id="tinhtrang" disabled>
-            <option selected>Đang làm việc</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Điện thoại *</label>
-          <input id="dienthoai" required />
-        </div>
-
-        <div class="field">
-          <label>Email *</label>
-          <input id="email" type="email" required />
-        </div>
-
-      </div>
-    </div>
-
-    <div class="btn-wrap" style="text-align:center;margin-top:20px;">
-      <button id="submitBtn">Gửi thông tin</button>
-    </div>
-
-  </form>
-
-</div>
+  </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+(function(){
+  const WORKER_URL = "https://nhanvien-form.dathongtan1810.workers.dev/";
 
-  const form = document.getElementById("hrForm");
-  const manv = document.getElementById("manv");
-  const hodem = document.getElementById("hodem");
-  const ten = document.getElementById("ten");
-  const hoten = document.getElementById("hoten");
-  const dienthoai = document.getElementById("dienthoai");
-  const email = document.getElementById("email");
-
-  // Tooltip
-  function showWarning(el, msg) {
-    clearWarning(el);
-    const t = document.createElement("div");
-    t.className = "tooltip";
-    t.innerText = msg;
+  // helpers
+  function $(id){return document.getElementById(id)}
+  function showTooltip(el, msg){
+    clearTooltip(el);
+    const t=document.createElement("div"); t.className="tooltip"; t.innerText=msg;
     el.parentElement.appendChild(t);
+    el.classList.add("border-red");
+  }
+  function clearTooltip(el){
+    const old = el.parentElement.querySelector(".tooltip"); if(old) old.remove();
+    el.classList.remove("border-red");
+  }
+  function formatDateToDDMMYYYY(isoDate){
+    // isoDate expected 'YYYY-MM-DD' or '' -> return 'DD/MM/YYYY' or ''
+    if(!isoDate) return "";
+    const parts = isoDate.split("-");
+    if(parts.length!==3) return isoDate;
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
   }
 
-  function clearWarning(el) {
-    const old = el.parentElement.querySelector(".tooltip");
-    if (old) old.remove();
-  }
+  document.addEventListener("DOMContentLoaded", ()=>{
 
-  // 1) Validate mã NV realtime
-  manv.addEventListener("input", e => {
-    const old = e.target.value;
-    const nv = old.toUpperCase().replace(/[^A-Z0-9]/g, "");
-    e.target.value = nv;
+    const form = $('hrForm');
+    const inputs = Array.from(form.querySelectorAll("input, select, textarea"));
+    const visibleInputs = inputs.filter(i=>i.type!=="hidden");
+    const submitBtn = $('submitBtn');
+    const popup = $('successPopup');
 
-    if (old !== nv) showWarning(manv, "Chỉ dùng A–Z và số, không dấu");
-    else clearWarning(manv);
-  });
+    const manv = $('manv'), hodem = $('hodem'), ten = $('ten'), hoten = $('hoten');
+    const ngaysinh = $('ngaysinh'), ngaycap = $('ngaycap'), nhanviec = $('nhanviec'), nhanviechd = $('nhanviechd');
+    const dienthoai = $('dienthoai'), email = $('email');
 
-  // 2) Autofill họ tên
-  function updateFN() {
-    hoten.value = (hodem.value.trim() + " " + ten.value.trim()).trim();
-  }
-  hodem.addEventListener("input", updateFN);
-  ten.addEventListener("input", updateFN);
+    // ----- Enter -> next visible input
+    visibleInputs.forEach((el, idx)=>{
+      el.addEventListener("keydown", e=>{
+        if(e.key === "Enter"){
+          e.preventDefault();
+          const next = visibleInputs[idx+1];
+          if(next) next.focus(); else submitBtn.focus();
+        }
+      });
+    });
 
-  // 3) Validate số điện thoại
-  dienthoai.addEventListener("input", e => {
-    const v = e.target.value.replace(/\D/g, "");
-    e.target.value = v;
+    // ----- manv realtime uppercase + remove non A-Z0-9
+    manv.addEventListener("input", e=>{
+      const old = e.target.value;
+      const nv = old.toUpperCase().replace(/[^A-Z0-9]/g, "");
+      e.target.value = nv;
+      if(old !== nv) showTooltip(manv, "Mã NV chỉ A–Z và số (không dấu)");
+      else clearTooltip(manv);
+    });
 
-    const valid = /^(03|05|07|08|09)[0-9]{8}$/.test(v);
-    if (!valid) showWarning(dienthoai, "SĐT phải 10 số và đúng đầu số VN");
-    else clearWarning(dienthoai);
-  });
+    // prevent leaving manv by Enter if invalid
+    manv.addEventListener("keydown", e=>{
+      if(e.key === "Enter"){
+        if(!/^[A-Z0-9]+$/.test(manv.value)){
+          e.preventDefault();
+          showTooltip(manv,"Mã nhân viên không hợp lệ");
+          manv.focus();
+        }
+      }
+    });
 
-  // 4) Validate email
-  email.addEventListener("input", e => {
-    const ok = /^[\w\.-]+@[\w\.-]+\.\w+$/.test(e.target.value.trim());
-    if (!ok) showWarning(email, "Email không đúng định dạng");
-    else clearWarning(email);
-  });
+    // ----- auto ghép họ tên realtime
+    function updateHoten(){ hoten.value = (hodem.value.trim() + " " + ten.value.trim()).trim(); }
+    hodem.addEventListener("input", updateHoten);
+    ten.addEventListener("input", updateHoten);
 
-  // 5) Validate khi submit
-  form.addEventListener("submit", e => {
-    e.preventDefault();
+    // ----- phone validation realtime (only digits)
+    dienthoai.addEventListener("input", e=>{
+      const v = e.target.value.replace(/\D/g,'');
+      e.target.value = v;
+      const ok = /^(03|05|07|08|09)[0-9]{8}$/.test(v);
+      if(!ok) showTooltip(dienthoai, "SĐT phải 10 chữ số, đầu 03|05|07|08|09");
+      else clearTooltip(dienthoai);
+    });
 
-    if (!/^[A-Z0-9]+$/.test(manv.value)) {
-      showWarning(manv, "Mã NV không hợp lệ");
-      manv.focus();
-      return;
-    }
+    // ----- email validation realtime
+    email.addEventListener("input", e=>{
+      const ok = /^[\w\.-]+@[\w\.-]+\.\w+$/.test(e.target.value.trim());
+      if(!ok) showTooltip(email, "Email không đúng định dạng");
+      else clearTooltip(email);
+    });
 
-    if (!/^(03|05|07|08|09)[0-9]{8}$/.test(dienthoai.value)) {
-      showWarning(dienthoai, "SĐT không hợp lệ");
-      dienthoai.focus();
-      return;
-    }
+    // ----- submit handler
+    form.addEventListener("submit", async (ev)=>{
+      ev.preventDefault();
 
-    if (!/^[\w\.-]+@[\w\.-]+\.\w+$/.test(email.value.trim())) {
-      showWarning(email, "Email sai định dạng");
-      email.focus();
-      return;
-    }
+      // clear old
+      form.querySelectorAll(".tooltip").forEach(t=>t.remove());
+      inputs.forEach(i=>i.classList.remove("border-red"));
 
-    updateFN(); // chắc chắn ghép
+      // basic required check
+      let firstError = null;
+      let valid = true;
+      inputs.forEach(el=>{
+        if(el.hasAttribute("required") && !el.value.trim()){
+          valid = false;
+          showTooltip(el, "Không được để trống");
+          if(!firstError) firstError = el;
+        }
+      });
+      if(!valid){
+        firstError.scrollIntoView({behavior:"smooth", block:"center"});
+        firstError.focus();
+        return;
+      }
 
-    alert("✔ Gửi dữ liệu thành công (demo)");
-  });
+      // manv check
+      if(!/^[A-Z0-9]+$/.test(manv.value)){
+        showTooltip(manv, "Mã NV không hợp lệ");
+        manv.focus();
+        return;
+      }
 
-});
+      // phone check
+      if(!/^(03|05|07|08|09)[0-9]{8}$/.test(dienthoai.value)){
+        showTooltip(dienthoai, "SĐT không hợp lệ");
+        dienthoai.focus();
+        return;
+      }
+
+      // email check
+      if(!/^[\w\.-]+@[\w\.-]+\.\w+$/.test(email.value.trim())){
+        showTooltip(email, "Email sai định dạng");
+        email.focus();
+        return;
+      }
+
+      // build payload + format dates to dd/mm/yyyy
+      updateHoten();
+      const payload = {
+        manv: manv.value.trim(),
+        hodem: hodem.value.trim(),
+        ten: ten.value.trim(),
+        hoten: hoten.value.trim(),
+        gioitinh: $('gioitinh').value,
+        ngaysinh: formatDateToDDMMYYYY(ngaysinh.value),
+        cccd: $('cccd').value.trim(),
+        ngaycap: formatDateToDDMMYYYY(ngaycap.value),
+        noicap: $('noicap').value.trim(),
+        nhanviec: formatDateToDDMMYYYY(nhanviec.value),
+        nhanviechd: formatDateToDDMMYYYY(nhanviechd.value),
+        chucvu: $('chucvu').value.trim(),
+        phongban: $('phongban').value.trim(),
+        dienthoai: dienthoai.value.trim(),
+        email: email.value.trim(),
+        tinhtrang: $('tinhtrang').value,
+        thuongtru: $('thuongtru').value.trim(),
+        tamtru: $('tamtru').value.trim(),
+        tinh: $('tinh').value.trim(),
+        huyen: $('huyen').value.trim(),
+        mst: $('mst').value.trim(),
+        bhxh: $('bhxh').value.trim(),
+        hocvan: $('hocvan').value.trim(),
+        chuyenmon: $('chuyenmon').value.trim(),
+        submittedAt: new Date().toISOString()
+      };
+
+      // send
+      const oldHTML = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span class="spinner"></span>';
+      submitBtn.disabled = true;
+
+      try {
+        const res = await fetch(WORKER_URL, {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+        let json=null;
+        try{ json=JSON.parse(text) }catch(e){ json=null }
+
+        if(!res.ok || (json && json.status && json.status!=="success")){
+          alert("Lỗi gửi dữ liệu:\n"+text);
+          submitBtn.innerHTML = oldHTML;
+          submitBtn.disabled = false;
+          return;
+        }
+
+        // success UI
+        popup.style.display = "flex";
+        setTimeout(()=> popup.style.display = "none",1500);
+
+        // reset form but keep tinhtrang default and uppercase behavior etc.
+        form.reset();
+        // ensure hoten hidden cleared
+        hoten.value = "";
+        // after reset, some fields (select disabled) may need to be set back
+        $('tinhtrang').value = "Đang làm việc";
+
+      } catch(err){
+        alert("Lỗi mạng / worker: "+ (err && err.message ? err.message : err));
+      } finally {
+        submitBtn.innerHTML = oldHTML;
+        submitBtn.disabled = false;
+      }
+
+    }); // end submit
+
+  }); // end DOMContentLoaded
+})(); // end IIFE
 </script>
 
 </body>
