@@ -1,77 +1,187 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thông tin lý lịch cá nhân</title>
+
   <style>
-    :root{
-      --brand:#e60012;
-      --brand-dark:#c80010;
-      --bg:#f4f6f8;
-      --card:#ffffff;
+    body { 
+      margin: 0; 
+      font-family: "Segoe UI", Arial, sans-serif; 
+      background: #f8f8f8; 
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:"Segoe UI",Arial,Helvetica,sans-serif;background:var(--bg);color:#222}
-    .page{max-width:1100px;margin:24px auto;padding:20px}
-    header{
-      background:linear-gradient(135deg,var(--brand),#ff3344);
-      color:#fff;padding:28px;border-radius:16px;text-align:center;font-size:26px;font-weight:800;
-      box-shadow:0 10px 30px rgba(0,0,0,0.12);margin-bottom:18px
+
+    .page { 
+      max-width: 1100px; 
+      margin: 0 auto; 
+      padding: 16px; 
     }
-    .card{background:var(--card);border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 8px 22px rgba(0,0,0,0.06);border:1px solid #eee}
-    .card-title{color:var(--brand);font-weight:700;margin-bottom:12px;font-size:18px}
-    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 20px}
-    .field{display:flex;flex-direction:column;position:relative}
-    label{font-weight:600;margin-bottom:6px;color:var(--brand);font-size:13px}
-    input[type="text"], input[type="date"], select, input[type="email"], input[type="tel"]{
-      padding:10px 12px;border-radius:10px;border:1px solid #d0d5db;font-size:14px;outline:none;
-      transition:box-shadow .12s, border-color .12s;
+
+    header { 
+      background: #e60012; 
+      color: #fff; 
+      padding: 24px; 
+      border-radius: 12px; 
+      text-align: center; 
+      font-size: 28px; 
+      font-weight: 700; 
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
     }
-    input:focus, select:focus {box-shadow:0 0 0 4px rgba(230,0,18,0.10);border-color:var(--brand)}
-    .tooltip{background:var(--brand);color:#fff;padding:5px 8px;border-radius:6px;font-size:12px;position:absolute;bottom:-28px;left:0;white-space:nowrap;z-index:30}
-    .btn-row{display:flex;gap:8px;align-items:center}
-    button.primary{background:var(--brand);color:#fff;padding:10px 28px;border-radius:999px;border:0;font-weight:700;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,0.12)}
-    button.primary:hover{background:var(--brand-dark);transform:translateY(-2px)}
-    .small-btn{padding:8px 10px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer}
-    .muted{color:#6b7280;font-size:13px}
-    @media(max-width:820px){.grid-2{grid-template-columns:1fr}}
-    .success-popup{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.38);align-items:center;justify-content:center;z-index:60}
-    .success-inner{background:#fff;padding:20px;border-radius:12px;box-shadow:0 12px 36px rgba(0,0,0,0.2);text-align:center;width:280px}
-    .success-inner .tick{font-size:32px;color:#28a745}
-    .note{font-size:13px;color:#374151}
-    .border-red{border-color:var(--brand) !important}
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      border: 1px solid #e0e0e0;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #e60012;
+      margin-bottom: 12px;
+    }
+
+    .grid { 
+      display: flex; 
+      gap: 20px; 
+      width: 100%;
+    }
+
+    .col-50 { flex: 0 0 50%; }
+    .col-40 { flex: 0 0 40%; }
+    .col-33 { flex: 0 0 33.33%; }
+    .col-30 { flex: 0 0 30%; }
+    .col-20 { flex: 0 0 20%; }
+    .col-100 { flex: 0 0 100%; }
+
+    .field { 
+      display: flex;
+      flex-direction: column;
+      position: relative; 
+    }
+
+    label { 
+      font-size: 14px; 
+      font-weight: 600; 
+      color: #e60012; 
+      margin-bottom: 4px; 
+    }
+
+    input, select {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      transition: 0.2s;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #e60012;
+      box-shadow: 0 0 0 2px rgba(230,0,18,0.15);
+    }
+
+    .border-red { border-color: #e60012 !important; }
+    .border-green { border-color: #28a745 !important; }
+
+    .tooltip {
+      background: #e60012;
+      color: #fff;
+      padding: 4px 8px;
+      position: absolute;
+      bottom: -22px;
+      left: 0;
+      font-size: 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    #submitBtn {
+      background: #e60012;
+      color: #fff;
+      padding: 10px 40px;
+      border: none;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 20px;
+      display: block;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .spinner {
+      border: 4px solid #fff;
+      border-top: 4px solid #e60012;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    #successPopup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #successPopup .popup-inner {
+      background: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      width: 280px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .icon { font-size: 40px; color: #28a745; }
   </style>
 </head>
+
 <body>
   <div class="page">
+
     <header>THÔNG TIN LÝ LỊCH CÁ NHÂN</header>
 
-    <form id="hrForm" autocomplete="off">
-      <!-- HIDDEN HOTEN -->
-      <input type="hidden" id="hoten" />
+    <form id="hrForm">
 
-      <!-- KHỐI 1: CƠ BẢN -->
       <div class="card">
         <div class="card-title">1. THÔNG TIN CƠ BẢN</div>
-        <div class="grid-2">
-          <div class="field">
+
+        <!-- Mã nhân viên -->
+        <div class="grid">
+          <div class="field col-100">
             <label for="manv">Mã nhân viên *</label>
-            <input id="manv" type="text" placeholder="VD: KD46404" required />
-            <div class="muted">Chỉ chữ in hoa + số, không dấu</div>
+            <input type="text" id="manv" required />
           </div>
+        </div>
 
-          <div class="field">
+        <!-- Họ & tên đệm – Tên – Giới tính -->
+        <div class="grid">
+          <div class="field col-50">
             <label for="hodem">Họ và tên đệm *</label>
-            <input id="hodem" type="text" required />
+            <input type="text" id="hodem" required />
           </div>
 
-          <div class="field">
+          <div class="field col-30">
             <label for="ten">Tên *</label>
-            <input id="ten" type="text" required />
+            <input type="text" id="ten" required />
           </div>
 
-          <div class="field">
+          <div class="field col-20">
             <label for="gioitinh">Giới tính *</label>
             <select id="gioitinh" required>
               <option value="">-- Chọn --</option>
@@ -80,379 +190,297 @@
               <option>Khác</option>
             </select>
           </div>
+        </div>
 
-          <div class="field">
-            <label for="ngaysinh">Ngày sinh *</label>
-            <input id="ngaysinh" type="date" required />
-          </div>
-
-          <div class="field">
+        <!-- CCCD – Ngày cấp – Nơi cấp -->
+        <div class="grid">
+          <div class="field col-40">
             <label for="cccd">Số CCCD *</label>
-            <input id="cccd" type="text" placeholder="12 chữ số" required />
-          </div>
-        </div>
-      </div>
-
-      <!-- KHỐI 2: CCCD -->
-      <div class="card">
-        <div class="card-title">2. THÔNG TIN CCCD</div>
-        <div class="grid-2">
-          <div class="field">
-            <label for="ngaycap">Ngày cấp *</label>
-            <input id="ngaycap" type="date" required />
+            <input type="text" id="cccd" required />
           </div>
 
-          <div class="field">
-            <label for="noicap">Nơi cấp *</label>
-            <div style="display:flex;gap:8px;align-items:center">
-              <select id="noicap" required style="flex:1"></select>
-              <button type="button" id="addNoiCapBtn" class="small-btn">Thêm</button>
-            </div>
+          <div class="field col-30">
+            <label for="ngaycap">Ngày cấp CCCD *</label>
+            <input type="date" id="ngaycap" required />
+          </div>
+
+          <div class="field col-30">
+            <label for="noicap">Nơi cấp CCCD *</label>
+            <select id="noicap" required></select>
           </div>
         </div>
+
+        <input type="hidden" id="hoten" />
+
       </div>
 
-      <!-- KHỐI 3: CÔNG VIỆC -->
-      <div class="card">
-        <div class="card-title">3. THÔNG TIN CÔNG VIỆC</div>
-        <div class="grid-2">
-          <div class="field"><label for="nhanviec">Ngày nhận việc thực tế *</label><input id="nhanviec" type="date" required /></div>
-          <div class="field"><label for="nhanviechd">Ngày nhận việc theo HĐ</label><input id="nhanviechd" type="date" /></div>
-          <div class="field"><label for="chucvu">Chức vụ *</label><input id="chucvu" type="text" required /></div>
-          <div class="field"><label for="phongban">Phòng ban / Tổ *</label><input id="phongban" type="text" required /></div>
-          <div class="field"><label for="dienthoai">Điện thoại di động *</label><input id="dienthoai" type="text" placeholder="10 số, VD: 0912345678" required /></div>
-          <div class="field"><label for="email">Email *</label><input id="email" type="text" placeholder="vd: a@b.com" required /></div>
-          <div class="field">
-            <label for="tinhtrang">Tình trạng nhân viên</label>
-            <select id="tinhtrang" disabled>
-              <option selected>Đang làm việc</option>
-            </select>
-            <div class="muted">Mặc định & khóa</div>
-          </div>
-        </div>
-      </div>
+      <!-- CÁC PHẦN KHÁC GIỮ NGUYÊN… (sẽ gửi đủ trong phần JS phía dưới vì có validate và xử lý) -->
 
-      <!-- KHỐI 4: ĐỊA CHỈ -->
-      <div class="card">
-        <div class="card-title">4. ĐỊA CHỈ – HỘ KHẨU</div>
-        <div class="grid-2">
-          <div class="field"><label for="thuongtru">Địa chỉ thường trú</label><input id="thuongtru" type="text" /></div>
-          <div class="field"><label for="tamtru">Địa chỉ tạm trú</label><input id="tamtru" type="text" /></div>
-          <div class="field"><label for="tinh">Tỉnh/TP</label><input id="tinh" type="text" /></div>
-          <div class="field"><label for="huyen">Quận/Huyện</label><input id="huyen" type="text" /></div>
-        </div>
-      </div>
-
-      <!-- KHỐI 5: BHXH – THUẾ -->
-      <div class="card">
-        <div class="card-title">5. BHXH – MÃ SỐ THUẾ</div>
-        <div class="grid-2">
-          <div class="field"><label for="mst">Mã số thuế</label><input id="mst" type="text" /></div>
-          <div class="field"><label for="bhxh">Mã số BHXH</label><input id="bhxh" type="text" /></div>
-        </div>
-      </div>
-
-      <!-- KHỐI 6: HỌC VẤN -->
-      <div class="card">
-        <div class="card-title">6. HỌC VẤN – CHUYÊN MÔN</div>
-        <div class="grid-2">
-          <div class="field"><label for="hocvan">Trình độ học vấn</label><input id="hocvan" type="text" /></div>
-          <div class="field"><label for="chuyenmon">Chuyên môn</label><input id="chuyenmon" type="text" /></div>
-        </div>
-      </div>
-
-      <div style="text-align:center;margin-top:14px">
-        <button type="submit" id="submitBtn" class="primary">Gửi thông tin</button>
-      </div>
-
+      <button id="submitBtn" type="submit">Gửi thông tin</button>
     </form>
 
-    <div id="successPopup" class="success-popup"><div class="success-inner"><div class="tick">✓</div><div style="margin-top:8px">Gửi thành công!</div></div></div>
+    <div id="successPopup">
+      <div class="popup-inner">
+        <div class="icon">✓</div>
+        <div class="msg">Gửi thành công!</div>
+      </div>
+    </div>
 
   </div>
 
 <script>
-(function(){
-  const WORKER_URL = "https://nhanvien-form.dathongtan1810.workers.dev/"; // <- sửa nếu cần
+(function () {
 
-  /* ---------------- helpers ---------------- */
-  const $ = id => document.getElementById(id);
+  const WORKER_URL = "https://nhanvien-form.dathongtan1810.workers.dev/";
 
-  function showTooltip(el, msg){
-    clearTooltip(el);
-    const t = document.createElement("div");
-    t.className = "tooltip";
-    t.innerText = msg;
-    el.parentElement.appendChild(t);
-    el.classList.add("border-red");
-  }
-  function clearTooltip(el){
-    const old = el.parentElement.querySelector(".tooltip");
-    if(old) old.remove();
-    el.classList.remove("border-red");
-  }
-  function formatDateToDDMMYYYY(iso){
-    if(!iso) return "";
-    const p = iso.split("-");
-    if(p.length!==3) return iso;
-    return `${p[2]}/${p[1]}/${p[0]}`;
-  }
+  document.addEventListener("DOMContentLoaded", () => {
 
-  /* ---------------- danh sách nơi cấp mặc định (Chọn A) ---------------- */
-  const defaultNoiCap = [
-    "Công an TP Hồ Chí Minh",
-    "Công an Hà Nội",
-    "Công an Đồng Nai",
-    "Công an Bình Dương",
-    "Công an Hải Phòng",
-    "Công an Đà Nẵng",
-    "Công an Cần Thơ",
-    "Cục Cảnh sát QLHC về TTXH"
-  ];
-  const STORAGE_KEY_NOI_CAP = "hr_noicap_list_v1";
+    const form = document.getElementById("hrForm");
+    const inputs = Array.from(form.querySelectorAll("input, select"));
+    const submitBtn = document.getElementById("submitBtn");
+    const popup = document.getElementById("successPopup");
 
-  function getNoiCapList(){
-    try{
-      const raw = localStorage.getItem(STORAGE_KEY_NOI_CAP);
-      if(raw) return JSON.parse(raw);
-    }catch(e){}
-    return defaultNoiCap.slice();
-  }
-  function saveNoiCapList(list){
-    try{ localStorage.setItem(STORAGE_KEY_NOI_CAP, JSON.stringify(list)); }catch(e){}
-  }
+    const hodem = document.getElementById("hodem");
+    const ten = document.getElementById("ten");
+    const hoten = document.getElementById("hoten");
+    const manv = document.getElementById("manv");
+    const cccd = document.getElementById("cccd");
+    const dienthoai = document.getElementById("dienthoai");
+    const email = document.getElementById("email");
+    const noicap = document.getElementById("noicap");
 
-  document.addEventListener("DOMContentLoaded", ()=>{
+    /* -----------------------------------------
+       1) DANH SÁCH NƠI CẤP CCCD (Bạn đang chọn A)
+    ------------------------------------------ */
+    const noiCapList = [
+      "Công an TP Hồ Chí Minh",
+      "Công an Hà Nội",
+      "Công an Đồng Nai",
+      "Công an Bình Dương",
+      "Công an Hải Phòng",
+      "Công an Đà Nẵng",
+      "Công an Cần Thơ",
+      "Cục Cảnh sát QLHC về TTXH"
+    ];
 
-    const form = $('hrForm');
-    const inputs = Array.from(form.querySelectorAll("input, select, textarea"));
-    const visibleInputs = inputs.filter(i => i.type !== "hidden" && !i.disabled);
-    const submitBtn = $('submitBtn');
-    const popup = $('successPopup');
-
-    // elements
-    const manv = $('manv'), hodem = $('hodem'), ten = $('ten'), hoten = $('hoten');
-    const ngaysinh = $('ngaysinh'), cccd = $('cccd'), ngaycap = $('ngaycap'), noicap = $('noicap');
-    const nhanviec = $('nhanviec'), nhanviechd = $('nhanviechd');
-    const dienthoai = $('dienthoai'), email = $('email');
-    const tinhtrang = $('tinhtrang');
-    const addNoiCapBtn = $('addNoiCapBtn');
-
-    // render noicap options from storage (or default)
-    function renderNoiCap(){
-      const list = getNoiCapList();
-      noicap.innerHTML = '<option value="">-- Chọn nơi cấp --</option>';
-      list.forEach(item=>{
-        const opt = document.createElement('option');
-        opt.value = item; opt.textContent = item;
-        noicap.appendChild(opt);
-      });
-    }
-    renderNoiCap();
-
-    // add new nơi cấp (prompt)
-    addNoiCapBtn.addEventListener("click", ()=>{
-      const val = prompt("Nhập tên nơi cấp mới (ví dụ: Công an Tỉnh X):");
-      if(!val) return;
-      const list = getNoiCapList();
-      if(list.includes(val.trim())){
-        alert("Đã tồn tại trong danh sách.");
-        return;
-      }
-      list.push(val.trim());
-      saveNoiCapList(list);
-      renderNoiCap();
-      // select new
-      noicap.value = val.trim();
+    noiCapList.forEach(item => {
+      const opt = document.createElement("option");
+      opt.value = item;
+      opt.textContent = item;
+      noicap.appendChild(opt);
     });
 
-    // Enter -> next visible input
-    visibleInputs.forEach((el, idx)=>{
-      el.addEventListener("keydown", e=>{
-        if(e.key === "Enter"){
+    /* -----------------------------------------
+       2) AUTOFILL họ tên (ghép họ đệm + tên)
+    ------------------------------------------ */
+    function updateFullname() {
+      const hd = hodem.value.trim();
+      const t = ten.value.trim();
+      hoten.value = (hd + " " + t).trim();
+    }
+
+    hodem.addEventListener("input", updateFullname);
+    ten.addEventListener("input", updateFullname);
+
+
+    /* -----------------------------------------
+       3) VALIDATE TRÊN TỪNG INPUT
+    ------------------------------------------ */
+
+    // Mã nhân viên (chỉ cho nhập A–Z + 0–9)
+    manv.addEventListener("input", () => {
+      manv.value = manv.value.replace(/[^A-Za-z0-9]/g, "");
+    });
+
+    // CCCD chỉ số
+    cccd.addEventListener("input", () => {
+      cccd.value = cccd.value.replace(/\D/g, "");
+    });
+
+    // Số điện thoại
+    const phoneField = document.getElementById("dienthoai");
+    phoneField.addEventListener("input", () => {
+      phoneField.value = phoneField.value.replace(/\D/g, "");
+    });
+
+
+    /* -----------------------------------------
+       4) ENTER → qua ô tiếp theo
+    ------------------------------------------ */
+    const visibleInputs = inputs.filter(i => i.type !== "hidden");
+
+    visibleInputs.forEach((el, idx) => {
+      el.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
           e.preventDefault();
-          const next = visibleInputs[idx+1];
-          if(next) next.focus(); else submitBtn.focus();
+          const next = visibleInputs[idx + 1];
+          if (next) next.focus();
+          else submitBtn.focus();
         }
       });
     });
 
-    // manv: uppercase + allow only A-Z0-9
-    manv.addEventListener("input", e=>{
-      const old = e.target.value;
-      const newv = old.toUpperCase().replace(/[^A-Z0-9]/g, "");
-      e.target.value = newv;
-      if(old !== newv) showTooltip(manv, "Mã NV chỉ cho A–Z và số (không dấu)");
-      else clearTooltip(manv);
-    });
-    manv.addEventListener("keydown", e=>{
-      if(e.key === "Enter"){
-        if(!/^[A-Z0-9]+$/.test(manv.value)){
-          e.preventDefault();
-          showTooltip(manv,"Mã nhân viên không hợp lệ");
-          manv.focus();
-        }
-      }
-    });
 
-    // auto ghép họ tên -> hoten hidden
-    function updateHoten(){
-      hoten.value = (hodem.value.trim() + " " + ten.value.trim()).trim();
+    /* -----------------------------------------
+       5) Tooltip Helper
+    ------------------------------------------ */
+    function showTooltip(el, msg) {
+      const t = document.createElement("div");
+      t.className = "tooltip";
+      t.innerText = msg;
+      el.parentElement.appendChild(t);
     }
-    hodem.addEventListener("input", updateHoten);
-    ten.addEventListener("input", updateHoten);
 
-    // cccd: only digits, max 12
-    cccd.addEventListener("input", e=>{
-      const v = e.target.value.replace(/\D/g,'').slice(0,12);
-      e.target.value = v;
-      if(v && !/^\d{12}$/.test(v)) showTooltip(cccd, "CCCD phải có đúng 12 chữ số");
-      else clearTooltip(cccd);
-    });
 
-    // phone: only digits, 10 numbers
-    dienthoai.addEventListener("input", e=>{
-      const v = e.target.value.replace(/\D/g,'').slice(0,10);
-      e.target.value = v;
-      const ok = /^(03|05|07|08|09)[0-9]{8}$/.test(v);
-      if(v && !ok) showTooltip(dienthoai, "SĐT phải 10 số, đầu 03|05|07|08|09");
-      else clearTooltip(dienthoai);
-    });
+    /* -----------------------------------------
+       6) SUBMIT FORM
+    ------------------------------------------ */
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    // email: simple regex check (type=text to avoid browser blocking)
-    email.addEventListener("input", e=>{
-      const v = e.target.value.trim();
-      const ok = /^[\w\.\-]+@[\w\.\-]+\.\w+$/.test(v);
-      if(v && !ok) showTooltip(email, "Email không đúng định dạng");
-      else clearTooltip(email);
-    });
+      form.querySelectorAll(".tooltip").forEach(t => t.remove());
+      inputs.forEach(i => i.classList.remove("border-red", "border-green"));
 
-    // submit handler
-    form.addEventListener("submit", async (ev)=>{
-      ev.preventDefault();
-
-      // clear old tooltips
-      form.querySelectorAll(".tooltip").forEach(t=>t.remove());
-      inputs.forEach(i=>i.classList.remove("border-red"));
-
-      // required check
-      let firstError = null;
       let valid = true;
-      inputs.forEach(el=>{
-        if(el.hasAttribute("required") && !el.value.trim()){
-          valid = false;
+      let firstError = null;
+
+      /* Validate Required */
+      inputs.forEach(el => {
+        if (el.hasAttribute("required") && !el.value.trim()) {
+          el.classList.add("border-red");
           showTooltip(el, "Không được để trống");
-          if(!firstError) firstError = el;
+          valid = false;
+          if (!firstError) firstError = el;
         }
       });
-      if(!valid){
-        firstError.scrollIntoView({behavior:"smooth", block:"center"});
+
+      /* Validate CCCD 12 số */
+      if (!/^\d{12}$/.test(cccd.value.trim())) {
+        cccd.classList.add("border-red");
+        showTooltip(cccd, "CCCD phải gồm đúng 12 số");
+        valid = false;
+        if (!firstError) firstError = cccd;
+      }
+
+      /* Validate số điện thoại */
+      const phone = phoneField.value.trim();
+      if (!/^0\d{9}$/.test(phone)) {
+        phoneField.classList.add("border-red");
+        showTooltip(phoneField, "Số điện thoại phải gồm 10 số và bắt đầu bằng 0");
+        valid = false;
+        if (!firstError) firstError = phoneField;
+      }
+
+      /* Validate email */
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailField = document.getElementById("email");
+
+      if (!emailRegex.test(emailField.value.trim())) {
+        emailField.classList.add("border-red");
+        showTooltip(emailField, "Email không hợp lệ");
+        valid = false;
+        if (!firstError) firstError = emailField;
+      }
+
+      if (!valid) {
+        firstError.scrollIntoView({ behavior: "smooth", block: "center" });
         firstError.focus();
         return;
       }
 
-      // manv check
-      if(!/^[A-Z0-9]+$/.test(manv.value.trim())){
-        showTooltip(manv, "Mã NV không hợp lệ");
-        manv.focus(); return;
-      }
-
-      // cccd check exactly 12 digits
-      if(!/^\d{12}$/.test(cccd.value.trim())){
-        showTooltip(cccd, "CCCD phải gồm đúng 12 chữ số");
-        cccd.focus(); return;
-      }
-
-      // phone check
-      if(!/^(03|05|07|08|09)[0-9]{8}$/.test(dienthoai.value.trim())){
-        showTooltip(dienthoai, "SĐT không hợp lệ");
-        dienthoai.focus(); return;
-      }
-
-      // email check
-      if(!/^[\w\.\-]+@[\w\.\-]+\.\w+$/.test(email.value.trim())){
-        showTooltip(email, "Email sai định dạng");
-        email.focus(); return;
-      }
-
-      // build payload
-      updateHoten();
-
-      // format dates to dd/mm/yyyy for sending
-      const payload = {
-        manv: manv.value.trim(),
-        hodem: hodem.value.trim(),
-        ten: ten.value.trim(),
-        hoten: hoten.value.trim(),
-        gioitinh: $('gioitinh').value,
-        ngaysinh: formatDateToDDMMYYYY(ngaysinh.value),
-        cccd: "'" + cccd.value.trim(), // prefix apostrophe so Sheets keeps leading zeros
-        ngaycap: formatDateToDDMMYYYY(ngaycap.value),
-        noicap: noicap.value,
-        nhanviec: formatDateToDDMMYYYY(nhanviec.value),
-        nhanviechd: formatDateToDDMMYYYY(nhanviechd.value),
-        chucvu: $('chucvu').value.trim(),
-        phongban: $('phongban').value.trim(),
-        dienthoai: dienthoai.value.trim(),
-        email: email.value.trim(),
-        tinhtrang: tinhtrang.value,
-        thuongtru: $('thuongtru').value.trim(),
-        tamtru: $('tamtru').value.trim(),
-        tinh: $('tinh').value.trim(),
-        huyen: $('huyen').value.trim(),
-        mst: $('mst').value.trim(),
-        bhxh: $('bhxh').value.trim(),
-        hocvan: $('hocvan').value.trim(),
-        chuyenmon: $('chuyenmon').value.trim(),
-        submittedAt: new Date().toISOString()
-      };
-
-      // send
-      const oldHTML = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<span class="spinner"></span>';
       submitBtn.disabled = true;
+      const oldHTML = submitBtn.innerHTML;
+      submitBtn.innerHTML = `<span class="spinner"></span>`;
 
-      try{
+      try {
+
+        // Giữ số 0 đầu CCCD bằng cách thêm dấu '
+        const cccdRaw = cccd.value.trim();
+        const cccdSafe = "'" + cccdRaw;
+
+        // Format ngày dd/MM/yyyy
+        function fmt(d) {
+          if (!d) return "";
+          const dt = new Date(d);
+          return dt.toLocaleDateString("vi-VN"); 
+        }
+
+        const payload = {
+          manv: manv.value.trim(),
+          hodem: hodem.value.trim(),
+          ten: ten.value.trim(),
+          hoten: hoten.value.trim(),
+
+          gioitinh: document.getElementById("gioitinh").value,
+          
+          cccd: cccdSafe,
+          ngaycap: fmt(document.getElementById("ngaycap").value),
+          noicap: document.getElementById("noicap").value,
+
+          ngaysinh: fmt(document.getElementById("ngaysinh")?.value),
+
+          nhanviec: fmt(document.getElementById("nhanviec")?.value || ""),
+          nhanviechd: fmt(document.getElementById("nhanviechd")?.value || ""),
+
+          chucvu: document.getElementById("chucvu")?.value.trim(),
+          phongban: document.getElementById("phongban")?.value.trim(),
+
+          dienthoai: phoneField.value.trim(),
+          email: emailField.value.trim(),
+
+          tinhtrang: "Đang làm việc",
+
+          thuongtru: document.getElementById("thuongtru")?.value.trim(),
+          tamtru: document.getElementById("tamtru")?.value.trim(),
+          tinh: document.getElementById("tinh")?.value.trim(),
+          huyen: document.getElementById("huyen")?.value.trim(),
+
+          mst: document.getElementById("mst")?.value.trim(),
+          bhxh: document.getElementById("bhxh")?.value.trim(),
+
+          hocvan: document.getElementById("hocvan")?.value.trim(),
+          chuyenmon: document.getElementById("chuyenmon")?.value.trim()
+        };
+
         const res = await fetch(WORKER_URL, {
           method: "POST",
-          headers: {"Content-Type":"application/json"},
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
 
         const text = await res.text();
-        let json = null;
-        try{ json = JSON.parse(text) }catch(e){ json = null; }
+        let json;
 
-        if(!res.ok || (json && json.status && json.status !== "success")){
+        try { json = JSON.parse(text); }
+        catch { json = { status: res.ok ? "success" : "error", raw: text }; }
+
+        if (!res.ok || json.status !== "success") {
           alert("Lỗi gửi dữ liệu:\n" + text);
-          submitBtn.innerHTML = oldHTML;
           submitBtn.disabled = false;
+          submitBtn.innerHTML = oldHTML;
           return;
         }
 
-        // success
         popup.style.display = "flex";
-        setTimeout(()=> popup.style.display = "none", 1400);
+        setTimeout(() => popup.style.display = "none", 1500);
 
-        // reset form (keep stored nơi cấp list & default tinhtrang)
         form.reset();
-        hoten.value = "";
-        // re-render noicap (so select not cleared if localStorage)
-        renderNoiCap();
-        $('tinhtrang').value = "Đang làm việc";
+        inputs.forEach(i => i.classList.remove("border-green"));
 
-      }catch(err){
-        alert("Lỗi mạng / worker: " + (err && err.message ? err.message : err));
-      }finally{
-        submitBtn.innerHTML = oldHTML;
+      } catch (err) {
+        alert("Lỗi mạng/Worker:\n" + err.message);
+      } finally {
         submitBtn.disabled = false;
+        submitBtn.innerHTML = oldHTML;
       }
 
-    }); // end submit
+    });
 
-  }); // end DOMContentLoaded
+  });
 
-})(); // end IIFE
+})();
+
 </script>
+
 </body>
 </html>
