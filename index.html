@@ -59,6 +59,9 @@
   .success-inner{background:#fff;padding:20px;border-radius:12px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.2)}
   .border-red{border-color:var(--brand) !important}
   .mobile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  /* spinner */
+  .spinner { border: 3px solid rgba(0,0,0,0.08); border-top: 3px solid var(--brand); border-radius: 50%; width: 18px; height: 18px; animation: spin 0.8s linear infinite; display:inline-block; vertical-align:middle; }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
   /* responsive */
   @media(max-width:900px){
     .grid-row{flex-direction:column;align-items:stretch}
@@ -260,6 +263,7 @@
   const hodem = document.getElementById('hodem');
   const ten = document.getElementById('ten');
   const hoten = document.getElementById('hoten');
+  const cccdEl = document.getElementById('cccd') || document.getElementById('cccd'); // safe ref (if absent)
   const cccd = document.getElementById('cccd');
   const ngaycap = document.getElementById('ngaycap');
   const noicap = document.getElementById('noicap');
@@ -277,25 +281,27 @@
   const successPopup = document.getElementById('successPopup');
 
   // initialize flatpickr
-  const flatOptions = { dateFormat: "d/m/Y", allowInput: true };
+  const flatOptions = { dateFormat: "d/m/Y", allowInput: true, wrap: false };
   document.querySelectorAll('.flat-date').forEach(el => flatpickr(el, flatOptions));
 
   // helper tooltip
   function showTooltip(el, msg){
+    if(!el || !el.parentElement) return;
     clearTooltip(el);
     const t = document.createElement('div'); t.className='tooltip'; t.innerText=msg;
     el.parentElement.appendChild(t);
     el.classList.add('border-red');
   }
   function clearTooltip(el){
+    if(!el || !el.parentElement) return;
     const o = el.parentElement.querySelector('.tooltip'); if(o) o.remove();
     el.classList.remove('border-red');
   }
 
   // AUTOFILL hoten
-  function updateHoten(){ hoten.value = (hodem.value.trim() + ' ' + ten.value.trim()).trim(); }
+  function updateHoten(){ hoten.value = (hodem.value.trim() + ' ' + (ten ? ten.value.trim() : '')).trim(); }
   hodem.addEventListener('input', updateHoten);
-  ten.addEventListener('input', updateHoten);
+  if(ten) ten.addEventListener('input', updateHoten);
 
   // MANV: uppercase + allow A-Z0-9
   manv.addEventListener('input', () => {
@@ -305,12 +311,11 @@
   });
 
   // CCCD numeric only, max 12
-  const cccdEl = document.getElementById('cccd');
-  if(cccdEl){
-    cccdEl.addEventListener('input', () => {
-      cccdEl.value = cccdEl.value.replace(/\D/g,'').slice(0,12);
-      if(cccdEl.value && !/^\d{12}$/.test(cccdEl.value)) showTooltip(cccdEl, 'CCCD phải 12 chữ số');
-      else clearTooltip(cccdEl);
+  if(cccd){
+    cccd.addEventListener('input', () => {
+      cccd.value = cccd.value.replace(/\D/g,'').slice(0,12);
+      if(cccd.value && !/^\d{12}$/.test(cccd.value)) showTooltip(cccd, 'CCCD phải 12 chữ số');
+      else clearTooltip(cccd);
     });
   }
 
@@ -329,31 +334,41 @@
     else clearTooltip(email);
   });
 
-  // ENTER navigates to next visible input (and avoids losing data if flatpickr open)
+  // collect inputs for Enter handling
   const inputs = Array.from(form.querySelectorAll('input,select')).filter(i=>i.type!=='hidden');
+
+  // ENTER: robust handler — close flatpickr, blur to commit, then move focus next
   inputs.forEach((el, idx) => {
     el.addEventListener('keydown', (e) => {
       if(e.key === 'Enter'){
         e.preventDefault();
 
-        // if current field is a flatpickr and open, close it first (prevents losing value)
-        if(el._flatpickr && el._flatpickr.isOpen){
-          el._flatpickr.close();
+        try {
+          // if flatpickr open -> close it to commit the value
+          if(el._flatpickr && el._flatpickr.isOpen){
+            el._flatpickr.close();
+          }
+        } catch (err) { /* ignore */ }
+
+        // Force blur to commit current value
+        try { el.blur(); } catch (err) {}
+
+        // find next visible, enabled input
+        let next = null;
+        for (let i = idx + 1; i < inputs.length; i++){
+          const cand = inputs[i];
+          if(!cand.disabled && cand.offsetParent !== null){
+            next = cand;
+            break;
+          }
         }
 
-        // move to next visible field
-        let nextIdx = idx + 1;
-        // find next that is not disabled and visible
-        while(nextIdx < inputs.length){
-          const next = inputs[nextIdx];
-          if(!next.disabled && next.offsetParent !== null){ // visible
-            next.focus();
-            return;
-          }
-          nextIdx++;
+        if(next){
+          next.focus();
+          // if it's a flatpickr input, open? we avoid auto-opening
+        } else {
+          submitBtn.focus();
         }
-        // if none, focus submit
-        submitBtn.focus();
       }
     });
   });
@@ -460,10 +475,10 @@
 
     // clear earlier tooltips
     form.querySelectorAll('.tooltip').forEach(t => t.remove());
-    [manv, hodem, ten, cccdEl, ngaycap, noicap, ngaysinh, nhanviec, dienthoai, email].forEach(el => el && el.classList.remove('border-red'));
+    [manv, hodem, ten, cccd, ngaycap, noicap, ngaysinh, nhanviec, dienthoai, email].forEach(el => el && el.classList.remove('border-red'));
 
     // required check
-    const requiredFields = [manv, hodem, ten, cccdEl, ngaycap, noicap, ngaysinh, nhanviec, dienthoai, email];
+    const requiredFields = [manv, hodem, ten, cccd, ngaycap, noicap, ngaysinh, nhanviec, dienthoai, email];
     for(const f of requiredFields){
       if(!f || !f.value || f.value.trim() === ''){
         showTooltip(f, 'Không được để trống');
@@ -479,9 +494,9 @@
     }
 
     // cccd 12 digits
-    if(!/^\d{12}$/.test(cccdEl.value.trim())){
-      showTooltip(cccdEl, 'CCCD phải gồm đúng 12 chữ số');
-      cccdEl.focus(); return;
+    if(!/^\d{12}$/.test(cccd.value.trim())){
+      showTooltip(cccd, 'CCCD phải gồm đúng 12 chữ số');
+      cccd.focus(); return;
     }
 
     // phone
@@ -504,7 +519,7 @@
       ten: ten.value.trim(),
       hoten: hoten.value.trim(),
       gioitinh: document.getElementById('gioitinh').value || '',
-      cccd: "'" + cccdEl.value.trim(),
+      cccd: "'" + cccd.value.trim(),
       ngaycap: formatDateStringFromFlatpickr(ngaycap.value),
       noicap: noicap.value.trim(),
       ngaysinh: formatDateStringFromFlatpickr(ngaysinh.value),
@@ -574,48 +589,16 @@
     huyen.disabled = false;
   }
 
-  function provinces(){ 
-    return [
-      "Hà Nội","Hồ Chí Minh","Hải Phòng","Đà Nẵng","Cần Thơ","An Giang","Bà Rịa - Vũng Tàu","Bắc Giang",
-      "Bắc Kạn","Bạc Liêu","Bắc Ninh","Bến Tre","Bình Định","Bình Dương","Bình Phước","Bình Thuận",
-      "Cà Mau","Đắk Lắk","Đắk Nông","Điện Biên","Đồng Nai","Đồng Tháp","Gia Lai","Hà Giang","Hà Nam",
-      "Hà Tĩnh","Hải Dương","Hậu Giang","Hòa Bình","Hưng Yên","Khánh Hòa","Kiên Giang","Kon Tum",
-      "Lai Châu","Lâm Đồng","Lạng Sơn","Lào Cai","Long An","Nam Định","Nghệ An","Ninh Bình","Ninh Thuận",
-      "Phú Thọ","Phú Yên","Quảng Bình","Quảng Nam","Quảng Ngãi","Quảng Ninh","Quảng Trị","Sóc Trăng",
-      "Sơn La","Tây Ninh","Thái Bình","Thái Nguyên","Thanh Hóa","Thừa Thiên Huế","Tiền Giang","Trà Vinh",
-      "Tuyên Quang","Vĩnh Long","Vĩnh Phúc","Yên Bái"
-    ];
-  }
-
-  const districtsMap = {
-    "Hà Nội":["Quận Ba Đình","Quận Hoàn Kiếm","Quận Đống Đa","Quận Hai Bà Trưng","Quận Tây Hồ","Quận Cầu Giấy","Quận Thanh Xuân","Huyện Đông Anh","Huyện Sóc Sơn"],
-    "Hồ Chí Minh":["Quận 1","Quận 3","Quận 4","Quận 5","Quận 7","Quận Bình Thạnh","Huyện Nhà Bè","Huyện Bình Chánh","Thành Phố Thủ Đức"],
-    "Đồng Nai":["TP Biên Hòa","Huyện Long Thành","Huyện Nhơn Trạch"],
-    "Bình Dương":["TP Thủ Dầu Một","TP Dĩ An","TP Thuận An"],
-    "Hải Phòng":["Quận Hồng Bàng","Quận Ngô Quyền","Quận Lê Chân"],
-    "Đà Nẵng":["Quận Hải Châu","Quận Sơn Trà","Quận Thanh Khê"]
-  };
-
   function populateProvinces(){
     if(tinh.options.length) return;
     const placeholder = document.createElement('option'); placeholder.value=''; placeholder.textContent='-- Chọn tỉnh/TP --';
     tinh.appendChild(placeholder);
-    provinces().forEach(p => {
+    provinces.forEach(p => {
       const o = document.createElement('option'); o.value=p; o.textContent=p; tinh.appendChild(o);
     });
   }
-  function populateDistrictsFor(prov){
-    huyen.innerHTML = '';
-    const list = districtsMap[prov] || [`Quận/Huyện của ${prov}`];
-    list.forEach(x => {
-      const o = document.createElement('option'); o.value = x; o.textContent = x; huyen.appendChild(o);
-    });
-  }
 
-  populateProvinces();
-  populateDistrictsFor(provinces()[0]);
-
-  function updateHoten(){ hoten.value = (hodem.value.trim() + ' ' + ten.value.trim()).trim(); }
+  function updateHoten(){ hoten.value = (hodem.value.trim() + ' ' + (ten ? ten.value.trim() : '')).trim(); }
 })();
 </script>
 
