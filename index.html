@@ -1,4 +1,3 @@
-<!-- Updated code will be inserted here. Due to size, please paste your original code again or specify which sections to move/remove so I can rewrite the full file accurately. -->
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -22,11 +21,10 @@
   .container{max-width:1100px;margin:18px auto;padding:18px}
   /* Header with image */
   .site-header{
-    background:
-      linear-gradient(90deg,var(--brand),var(--brand-2)),
-      url('/mnt/data/bd341035-f139-4a42-95f8-544d6903cdeb.png');
+    background: linear-gradient(90deg,var(--brand),var(--brand-2));
     color:#fff;padding:28px;border-radius:12px;display:flex;align-items:center;gap:20px;
     box-shadow:0 10px 30px rgba(0,0,0,0.12);
+    background-image: url('/mnt/data/bd341035-f139-4a42-95f8-544d6903cdeb.png');
     background-size: cover;
     background-position: center;
   }
@@ -51,7 +49,7 @@
   .col-250{flex:0 0 250px} /* for code-like inputs if needed */
   .col-50{flex:0 0 50%}
   .col-30{flex:0 0 30%}
-  .col-20{flex:0 0 140px}
+  .col-20{flex:0 0 20%}
   .col-40{flex:0 0 40%}
   .col-33{flex:0 0 33.333%}
   .field{position:relative}
@@ -92,25 +90,26 @@
       <div class="card">
         <div class="card-title">1. THÔNG TIN CƠ BẢN</div>
 
-        <!-- ROW 1: Mã nhân viên / Họ đệm / Tên / Giới tính -->
-        <div class="grid-row" style="margin-bottom:12px;align-items:center">
-          <div class="field" style="flex:0 0 20%;">
+        <!-- Mã nhân viên full width -->
+        <div class="grid-row" style="margin-bottom:12px">
+          <div class="field col-full">
             <label for="manv">Mã nhân viên *</label>
             <input id="manv" type="text" placeholder="VD: KD46404" required />
             <div class="muted">Chỉ chữ (in hoa) và số, không dấu</div>
           </div>
+        </div>
 
-          <div class="field" style="flex:1;">
+        <!-- Họ đệm (50%) / Tên (30%) / Giới tính (20%) -->
+        <div class="grid-row" style="margin-bottom:12px">
+          <div class="field col-50">
             <label for="hodem">Họ và tên đệm *</label>
             <input id="hodem" type="text" required />
           </div>
-
-          <div class="field" style="flex:0 0 25%;">
+          <div class="field col-30">
             <label for="ten">Tên *</label>
             <input id="ten" type="text" required />
           </div>
-
-          <div class="field" style="flex:0 0 140px;">
+          <div class="field col-20">
             <label for="gioitinh">Giới tính *</label>
             <select id="gioitinh" required>
               <option value="">-- Chọn --</option>
@@ -119,28 +118,29 @@
           </div>
         </div>
 
-        <!-- ROW 2: Ngày sinh / CCCD / Ngày cấp / Nơi cấp -->
-        <div class="grid-row" style="margin-bottom:12px;align-items:center">
-          <div class="field" style="flex:0 0 20%;">
-            <label for="ngaysinh">Ngày sinh *</label>
-            <input id="ngaysinh" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
-          </div>
-
-          <div class="field" style="flex:0 0 25%;">
+        <!-- CCCD (40%) / Ngày cấp (30%) / Nơi cấp (30%) -->
+        <div class="grid-row" style="margin-bottom:12px">
+          <div class="field col-40">
             <label for="cccd">Số CCCD *</label>
             <input id="cccd" type="text" inputmode="numeric" maxlength="12" required />
           </div>
-
-          <div class="field" style="flex:0 0 20%;">
+          <div class="field col-30">
             <label for="ngaycap">Ngày cấp *</label>
             <input id="ngaycap" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
           </div>
-
-          <div class="field combobox" style="flex:1;">
+          <div class="field col-30 combobox">
             <label for="noicap">Nơi cấp CCCD *</label>
             <input id="noicap" type="text" list="listNoiCap" placeholder="Gõ để tìm..." required />
             <datalist id="listNoiCap"></datalist>
             <button type="button" class="clear-btn" title="Xóa" style="display:none" aria-hidden>&times;</button>
+          </div>
+        </div>
+
+        <!-- Ngày sinh -->
+        <div class="grid-row" style="margin-bottom:6px">
+          <div class="field col-33">
+            <label for="ngaysinh">Ngày sinh *</label>
+            <input id="ngaysinh" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
           </div>
         </div>
 
