@@ -120,6 +120,34 @@
         const hodem = document.getElementById("hodem");
         const ten = document.getElementById("ten");
 
+        const manvInput = document.getElementById("manv");
+
+// Cảnh báo realtime
+manvInput.addEventListener("input", e => {
+  const oldValue = e.target.value;
+  const newValue = oldValue.toUpperCase().replace(/[^A-Z0-9]/g, "");
+
+  if (oldValue !== newValue) {
+    showWarning(manvInput, "Mã nhân viên chỉ được gồm A–Z và số (không dấu)");
+  } else {
+    clearWarning(manvInput);
+  }
+
+  e.target.value = newValue;
+});
+
+// Chặn Enter nếu sai
+manvInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    if (!/^[A-Z0-9]+$/.test(manvInput.value)) {
+      e.preventDefault();
+      showWarning(manvInput, "Mã nhân viên không hợp lệ");
+      manvInput.focus();
+    }
+  }
+});
+
+
         // Enter => next input (only visible fields)
         const visibleInputs = inputs.filter(i => i.type !== "hidden");
         visibleInputs.forEach((el, idx) => {
