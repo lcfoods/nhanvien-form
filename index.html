@@ -84,66 +84,58 @@
 
     <form id="hrForm" class="form" autocomplete="off" novalidate>
       <!-- CARD 1: BASIC -->
-      <div class="card">
-        <div class="card-title">1. THÔNG TIN CƠ BẢN</div>
+<div class="card">
+  <div class="card-title">1. THÔNG TIN CƠ BẢN</div>
 
-        <!-- Mã nhân viên full width -->
-        <div class="grid-row" style="margin-bottom:12px">
-          <div class="field col-full">
-            <label for="manv">Mã nhân viên *</label>
-            <input id="manv" type="text" placeholder="VD: KD46404" required />
-            <div class="muted">Chỉ chữ (in hoa) và số, không dấu</div>
-          </div>
-        </div>
+  <!-- Dòng 1: Mã NV - Họ đệm - Tên - Giới tính - Ngày sinh -->
+  <div class="grid-row" style="margin-bottom:12px">
+    <div class="field col-20">
+      <label for="manv">Mã nhân viên *</label>
+      <input id="manv" type="text" placeholder="VD: KD46404" required />
+    </div>
+    <div class="field col-30">
+      <label for="hodem">Họ và tên đệm *</label>
+      <input id="hodem" type="text" required />
+    </div>
+    <div class="field col-20">
+      <label for="ten">Tên *</label>
+      <input id="ten" type="text" required />
+    </div>
+    <div class="field col-15">
+      <label for="gioitinh">Giới tính *</label>
+      <select id="gioitinh" required>
+        <option value="">-- Chọn --</option>
+        <option>Nam</option>
+        <option>Nữ</option>
+        <option>Khác</option>
+      </select>
+    </div>
+    <div class="field col-15">
+      <label for="ngaysinh">Ngày sinh *</label>
+      <input id="ngaysinh" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
+    </div>
+  </div>
 
-        <!-- Họ đệm (50%) / Tên (30%) / Giới tính (20%) -->
-        <div class="grid-row" style="margin-bottom:12px">
-          <div class="field col-50">
-            <label for="hodem">Họ và tên đệm *</label>
-            <input id="hodem" type="text" required />
-          </div>
-          <div class="field col-30">
-            <label for="ten">Tên *</label>
-            <input id="ten" type="text" required />
-          </div>
-          <div class="field col-20">
-            <label for="gioitinh">Giới tính *</label>
-            <select id="gioitinh" required>
-              <option value="">-- Chọn --</option>
-              <option>Nam</option><option>Nữ</option><option>Khác</option>
-            </select>
-          </div>
-        </div>
+  <!-- Dòng 2: CCCD - Ngày cấp - Nơi cấp -->
+  <div class="grid-row" style="margin-bottom:12px">
+    <div class="field col-33">
+      <label for="cccd">Số CCCD *</label>
+      <input id="cccd" type="text" inputmode="numeric" maxlength="12" required />
+    </div>
+    <div class="field col-33">
+      <label for="ngaycap">Ngày cấp CCCD *</label>
+      <input id="ngaycap" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
+    </div>
+    <div class="field col-33 combobox">
+      <label for="noicap">Nơi cấp CCCD *</label>
+      <input id="noicap" type="text" list="listNoiCap" placeholder="Gõ để tìm..." required />
+      <datalist id="listNoiCap"></datalist>
+      <button type="button" class="clear-btn" title="Xóa" style="display:none" aria-hidden>&times;</button>
+    </div>
+  </div>
 
-        <!-- CCCD (40%) / Ngày cấp (30%) / Nơi cấp (30%) -->
-        <div class="grid-row" style="margin-bottom:12px">
-          <div class="field col-40">
-            <label for="cccd">Số CCCD *</label>
-            <input id="cccd" type="text" inputmode="numeric" maxlength="12" required />
-          </div>
-          <div class="field col-30">
-            <label for="ngaycap">Ngày cấp *</label>
-            <input id="ngaycap" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
-          </div>
-          <div class="field col-30 combobox">
-            <label for="noicap">Nơi cấp CCCD *</label>
-            <input id="noicap" type="text" list="listNoiCap" placeholder="Gõ để tìm..." required />
-            <datalist id="listNoiCap"></datalist>
-            <button type="button" class="clear-btn" title="Xóa" style="display:none" aria-hidden>&times;</button>
-          </div>
-        </div>
-
-        <!-- Ngày sinh -->
-        <div class="grid-row" style="margin-bottom:6px">
-          <div class="field col-33">
-            <label for="ngaysinh">Ngày sinh *</label>
-            <input id="ngaysinh" type="text" class="flat-date" placeholder="dd/mm/yyyy" required />
-          </div>
-        </div>
-
-        <input type="hidden" id="hoten" />
-      </div>
-
+  <input type="hidden" id="hoten" />
+</div>
       <!-- CARD 2: CÔNG VIỆC -->
       <div class="card">
         <div class="card-title">2. THÔNG TIN CÔNG VIỆC</div>
